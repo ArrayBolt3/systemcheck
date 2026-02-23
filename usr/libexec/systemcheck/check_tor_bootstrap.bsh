@@ -132,7 +132,11 @@ check_tor_bootstrap_init() {
       whonix_firewall_status_word="pending"
    fi
 
-   onion_time_pre_script_output=$(timeout --kill-after="5" "5" leaprun onion-time-pre-script 2>&1) || true
+   if leaprun_run_action --check-only -- onion-time-pre-script; then
+      onion_time_pre_script_output=$(timeout --kill-after="5" "5" leaprun onion-time-pre-script 2>&1) || true
+   else
+      onion_time_pre_script_output=''
+   fi
    if [ "$onion_time_pre_script_output" = "" ]; then
       onion_time_pre_script_output="onion-time-pre-script did not return any output."
    fi

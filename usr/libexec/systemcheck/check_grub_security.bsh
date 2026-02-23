@@ -20,7 +20,7 @@ check_grub_security() {
    link_cli="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Bootloader_Password"
    link_gui="<a href=\"$link_cli\">Bootloader Password</a>"
 
-   if grub_password_status_check_output="$(leaprun grub-password-status-check 2>&1)"; then
+   if grub_password_status_check_output="$(leaprun_run_action --capture-stderr -- grub-password-status-check)"; then
       MSG="<p>GRUB $link_gui: <font color=\"green\">Enabled</font></p>"
       $output_x ${output_opts[@]} --messagex --typex "info" --message "$MSG"
 

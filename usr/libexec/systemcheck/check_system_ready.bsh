@@ -6,7 +6,7 @@
 check_system_ready_system() {
    system_ready_check_help_text_cmd="'<code>sudo systemctl --wait is-system-running</code>'
 (same as '<code>leaprun system-ready-check</code>')"
-   check_system_ready_shared system leaprun system-ready-check
+   check_system_ready_shared system leaprun_run_action --capture-stderr -- system-ready-check
 }
 
 check_system_ready_user() {
@@ -15,7 +15,7 @@ check_system_ready_user() {
 }
 
 check_system_ready_shared() {
-   local type i max leaprun_exit_code result
+   local type i max result
 
    type="$1"
    shift
@@ -24,14 +24,17 @@ check_system_ready_shared() {
    max="6"
 
    while true "INFO: function check_system_ready loop"; do
-      leaprun_exit_code=0
       ## variable max: 6 times
       ## timeout: 5 seconds
       ## wait maximum: 6 x 5 = 30 seconds
 
       ## Discard output of using '&>/dev/null' so we can launch into the background
       ## and check later by looking at file '/run/helper-scripts/system-ready-check' instead.
-      result="$("${@}" 2>&1)" || true
+      if [[ "${*}" =~ ^leaprun_run_action ]]; then
+         result="$("${@}")" || true
+      else
+         result="$("${@}" 2>&1)" || true
+      fi
       [ -n "$result" ] || result="Empty."
 
       if [ "$result" = "running" ]; then

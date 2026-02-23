@@ -35,10 +35,12 @@ check_operating_system() {
    ## /usr/libexec/helper-scripts/apt-get-update is timeout protected.
    ## setsid:
    ## https://stackoverflow.com/questions/48029094/sudo-ignores-sigterm-sent-from-same-script
-   if [ "$verbose" -ge "1" ]; then
-      leaprun apt-get-update &
-   else
-      leaprun apt-get-update >/dev/null &
+   if leaprun_run_action --check-only -- apt-get-update; then
+      if [ "$verbose" -ge "1" ]; then
+         leaprun -- apt-get-update &
+      else
+         leaprun -- apt-get-update >/dev/null &
+      fi
    fi
 
    apt_get_update_pid="$!"
@@ -103,7 +105,7 @@ $qubes_update_help</p>"
    local check_os_output check_os_output_show check_os_exit_code
    check_os_exit_code="0"
    ## /usr/libexec/helper-scripts/apt-get-update-simulate is timeout protected.
-   check_os_output="$(leaprun apt-get-update-simulate 2>&1)" || { check_os_exit_code="$?" ; true; };
+   check_os_output="$(leaprun_run_action --capture-stderr -- apt-get-update-simulate)" || { check_os_exit_code="$?" ; true; };
    check_os_output_show="$(br_add "$check_os_output")"
 
    if [ "$verbose" -ge "1" ]; then

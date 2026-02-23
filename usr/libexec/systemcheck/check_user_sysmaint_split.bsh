@@ -16,7 +16,7 @@ check_user_sysmaint_split_package() {
 
    local MSG
 
-   if ! leaprun user-sysmaint-split-check &>/dev/null ; then
+   if ! leaprun_run_action --silence-stdout --silence-stderr -- user-sysmaint-split-check; then
       MSG="<p>$link_gui: <font color=\"orange\">Absent</font></p>"
       $output_x ${output_opts[@]} --messagex --typex "info" --message "$MSG"
       MSG="\

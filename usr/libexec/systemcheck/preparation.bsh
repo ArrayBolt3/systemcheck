@@ -121,7 +121,7 @@ virtualizer_detection() {
       return 0
    fi
 
-   if systemcheck_virtualizer_detected="$(leaprun systemd-detect-virt 2>&1)" ; then
+   if systemcheck_virtualizer_detected="$(leaprun_run_action --capture-stderr -- systemd-detect-virt)" ; then
       true "INFO: No error reported from running $systemcheck_virt_detection_tool"
 
       if [ "$systemcheck_virtualizer_detected" = "xen" ]; then
@@ -130,7 +130,7 @@ virtualizer_detection() {
          fi
       fi
    else
-      true "INFO: leaprun systemd-detect-virt non-zero exit code. Expected on bare metal."
+      true "INFO: 'leaprun systemd-detect-virt' non-zero exit code. Expected on bare metal."
       ## in case of bare metal:
       ## systemcheck_virtualizer_detected=none
    fi
@@ -211,6 +211,70 @@ systemcheck_run_function() {
    fi
    true "INFO: Running $@."
    "$@"
+}
+
+leaprun_run_action() {
+   local do_check_only do_silence_stdout do_silence_stderr do_capture_stderr \
+      privleap_action MSG leaprun_cmd
+
+   do_check_only='false'
+   do_silence_stdout='false'
+   do_silence_stderr='false'
+   do_capture_stderr='false'
+   while [ -n "${1:-}" ]; do
+      case "$1" in
+         --check-only)
+            do_check_only='true'
+            shift
+            ;;
+         --silence-stdout)
+            do_silence_stdout='true'
+            shift
+            ;;
+         --silence-stderr)
+            do_silence_stderr='true'
+            shift
+            ;;
+         --capture-stderr)
+            do_capture_stderr='true'
+            shift
+            ;;
+         --)
+            shift
+            break
+            ;;
+         *)
+           break
+           ;;
+      esac
+   done
+   privleap_action="${1:-}"
+   if [ -z "${privleap_action}" ]; then return 1; fi
+
+   if ! leaprun --check -- "${privleap_action}" >/dev/null 2>&1; then
+      MSG="Could not run privleap action '${privleap_action}'! Some tests will not function properly."
+      $output_x ${output_opts[@]} --messagex --typex "error" --message "$MSG"
+      $output_cli ${output_opts[@]} --messagecli --typecli "error" --message "$MSG"
+      return 1
+   fi
+
+   if [ "${do_check_only}" = 'false' ]; then
+      leaprun_cmd=( 'leaprun' '--' "${privleap_action}" )
+
+      ## Shell redirections cannot be placed in the leaprun_cmd array directly.
+      if [ "${do_capture_stderr}" = 'true' ]; then
+         "${leaprun_cmd[@]}" 2>&1
+      elif [ "${do_silence_stdout}" = 'true' ] \
+         && [ "${do_silence_stderr}" = 'true' ]; then
+         "${leaprun_cmd[@]}" >/dev/null 2>&1
+      elif [ "${do_silence_stdout}" = 'true' ]; then
+         "${leaprun_cmd[@]}" >/dev/null
+      elif [ "${do_silence_stderr}" = 'true' ]; then
+         "${leaprun_cmd[@]}" 2>/dev/null
+      else
+         "${leaprun_cmd[@]}"
+      fi
+   fi
 }
 
 get_local_derivative_version() {

@@ -30,7 +30,7 @@ https://www.kicksecure.com/wiki/Systemcheck#Physical_Security_Check"
    user_list_str="$(/usr/libexec/helper-scripts/get-user-list)"
    readarray -t user_list <<< "$user_list_str"
 
-   password_status_list_str="$(leaprun get-password-status-list)"
+   password_status_list_str="$(leaprun_run_action get-password-status-list)"
    readarray -t password_status_list <<< "$password_status_list_str"
 
    autologin_status_list=()

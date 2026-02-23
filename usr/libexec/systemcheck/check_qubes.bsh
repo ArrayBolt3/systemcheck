@@ -253,7 +253,7 @@ check_qubes_update_proxy_daemon() {
       return 0
    fi
 
-   if leaprun qubes-updates-proxy-status >/dev/null 2>/dev/null ; then
+   if leaprun_run_action --silence-stdout --silence-stderr -- qubes-updates-proxy-status; then
       local MSG="<p>Qubes Updates Proxy Daemon Check Result: qubes-updates-proxy.service running, ok.</p>"
       if [ "$verbose" -ge "1" ]; then
          $output_x ${output_opts[@]} --messagex --typex "info" --message "$MSG"

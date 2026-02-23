@@ -36,7 +36,7 @@ maybe_kill_apt_get_update() {
    ## There is an exception in /etc/sudoers.d/.
    ## "|| true", to avoid an error when systemcheck receives a sigterm signal
    ## while running this command (such as when systemcheckd gets stopped).
-   leaprun apt-get-update-kill-helper || true
+   leaprun_run_action -- apt-get-update-kill-helper || true
 }
 ## }}
 

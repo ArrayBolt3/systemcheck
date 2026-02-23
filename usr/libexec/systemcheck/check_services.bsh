@@ -70,8 +70,8 @@ $if_you_know_what_you_are_doing_msg</p>"
 check_services() {
    check_type="system"
    manual_check_equivalent="<br /> (equivalent to: <code>sudo systemctl --state=failed,activating,deactivating list-units</code>)"
-   machine_command_machine="leaprun read-systemctl-logs-failed-units"
-   machine_command_pretty="leaprun read-systemctl-logs-failed-units-pretty"
+   machine_command_machine="leaprun_run_action -- read-systemctl-logs-failed-units"
+   machine_command_pretty="leaprun_run_action -- read-systemctl-logs-failed-units-pretty"
    systemcheck_run_function check_services_do
 
    check_type="user"
@@ -165,10 +165,10 @@ check_journal() {
 
    ## The contents of these four variables will have been sanitized by
    ## stcatn already.
-   log_output="$(leaprun log-checker-check_service_logs_this_boot)" || true
-   critical_output="$(leaprun log-checker-check_critical_logs)" || true
-   last_boot_log_output="$(leaprun log-checker-check_service_logs_last_boot)" || true
-   last_boot_critical_output="$(leaprun log-checker-check_critical_logs)" || true
+   log_output="$(leaprun_run_action -- log-checker-check_service_logs_this_boot)" || true
+   critical_output="$(leaprun_run_action -- log-checker-check_critical_logs)" || true
+   last_boot_log_output="$(leaprun_run_action -- log-checker-check_service_logs_last_boot)" || true
+   last_boot_critical_output="$(leaprun_run_action -- log-checker-check_critical_logs)" || true
 
    local if_you_know_what_you_are_doing_msg
    if_you_know_what_you_are_doing_msg="$(if_you_know_what_you_are_doing_funct "$FUNCNAME")"
@@ -214,7 +214,7 @@ check_whonix_firewall_systemd_status() {
    fi
 
    systemctl_status_whonix_firewall_exit_code="0"
-   systemctl_status_whonix_firewall_output="$(leaprun whonix-firewall-status 2>&1)" || { systemctl_status_whonix_firewall_exit_code="$?" ; true; }
+   systemctl_status_whonix_firewall_output="$(leaprun_run_action --capture-stderr -- whonix-firewall-status)" || { systemctl_status_whonix_firewall_exit_code="$?" ; true; }
    systemctl_status_whonix_firewall_output="$(br_add "$systemctl_status_whonix_firewall_output")"
 
    if [ "$systemctl_status_whonix_firewall_exit_code" = "0" ] && [ "$anon_firewall_failed_file_exists" = "false" ]; then
@@ -226,7 +226,7 @@ check_whonix_firewall_systemd_status() {
       return 0
    fi
 
-   journalctl_whonix_firewall_output="$(leaprun read-journalctl-logs-whonix-firewall)" || true
+   journalctl_whonix_firewall_output="$(leaprun_run_action -- read-journalctl-logs-whonix-firewall)" || true
    journalctl_whonix_firewall_output="$(br_add "$journalctl_whonix_firewall_output")"
 
    local if_you_know_what_you_are_doing_msg

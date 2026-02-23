@@ -29,7 +29,13 @@ check_spectre_meltdown() {
    timeout_after="10"
    kill_after="10"
 
-   spectre_meltdown_checker_output="$(timeout --kill-after="$kill_after" "$timeout_after" leaprun spectre-meltdown-checker 2>&1)" || { spectre_meltdown_checker_exit_code="$?"; };
+   ## TODO: 'spectre_meltdown_checker_output' is unused.
+   if leaprun_run_action --check-only -- spectre-meltdown-checker; then
+      spectre_meltdown_checker_output="$(timeout --kill-after="$kill_after" "$timeout_after" leaprun spectre-meltdown-checker 2>&1)" || { spectre_meltdown_checker_exit_code="$?"; };
+   else
+      spectre_meltdown_checker_output=''
+      spectre_meltdown_checker_exit_code='0'
+   fi
 
    if [ "$spectre_meltdown_checker_exit_code" = "0" ]; then
       local MSG="<p>Spectre Meltdown Test Result: not vulnerable, ok.</p>"

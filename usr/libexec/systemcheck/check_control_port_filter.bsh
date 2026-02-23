@@ -19,7 +19,7 @@ check_control_port_filter_running() {
 
    local i
    i="0"
-   while ! leaprun onion-grater-status >/dev/null 2>&1 ; do
+   while ! leaprun_run_action --silence-stdout --silence-stderr -- onion-grater-status; do
       local MSG="<p>Control Port Filter Proxy test: The onion-grater service is not running. Waiting up to 30 seconds.</p>"
       if [ "$silent" -le "2" ]; then
          $output_cli ${output_opts[@]} --messagecli --typecli "info" --message "$MSG"

@@ -121,7 +121,7 @@ See also: $mokutil_link_cli"
          && [ "${mokutil_present}" = 'y' ]; then
          ## Confusingly, 'mokutil --test-key' returns 1 if the key is already
          ## enrolled, and 0 if it is not.
-         if ! mokutil_output="$(leaprun mokutil-test-key 2>&1)"; then
+         if ! mokutil_output="$(leaprun_run_action --capture-stderr -- mokutil-test-key)"; then
             if [ "${mokutil_output}" = '/var/lib/dkms/mok.pub is already enrolled' ]; then
                MSG="<p>DKMS module signing keys enrolled in firmware: <font color=\"green\">Yes</font></p>"
                output_if_verbose $output_x ${output_opts[@]} --messagex --typex "info" --message "$MSG"
@@ -186,7 +186,7 @@ check_build_mok_keys() {
    local MSG secure_boot_enabled_check_retcode check_image_builtin_mok_retcode
 
    check_image_builtin_mok_retcode='0'
-   leaprun check-image-builtin-mok || check_image_builtin_mok_retcode="$?"
+   leaprun_run_action -- check-image-builtin-mok || check_image_builtin_mok_retcode="$?"
 
    if [ "${check_image_builtin_mok_retcode}" = '0' ]; then
       return 0
