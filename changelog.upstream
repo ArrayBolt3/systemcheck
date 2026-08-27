@@ -1,3 +1,352 @@
+commit 59fae9d5db0d81afcced034084a6d1675f311fee
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Aug 24 03:17:37 2026 -0400
+
+    end-of-options
+
+commit c83699c62ebf217383c16b4476f8c12bec492490
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Aug 24 03:14:57 2026 -0400
+
+    fix
+
+commit da284e5fa05c960a11c19a1b30168216016454a4
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Aug 24 03:14:27 2026 -0400
+
+    fix
+
+commit fedfb0a3cc137bc1ff0192487396825cc885cf8a
+Merge: a8d9f4c 8a2d568
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Aug 24 03:13:24 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/org-ai-assisted/ai'
+
+commit 8a2d5686a0351d37aa658534bbdb0a133a8b84d5
+Author: claude (dev272 e8b76afb-795c-4739-8ebd-023de854021e) <noreply@anthropic.com>
+Date:   Fri Aug 21 05:04:30 2026 -0400
+
+    systemcheck: source helper-scripts via HELPER_SCRIPTS_PATH + clear whole-file gate debt
+
+    check_privilege_escalation_tool.bsh:
+    - use_leaprun.sh, use_sudo.sh, use_pkexec.sh: source via
+      source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/<f>;
+      fix the stale '# shellcheck source=' directives to the R-080 sibling
+      path (../../../../helper-scripts/usr/libexec/helper-scripts/<f>) so
+      shellcheck -x follows them (no SC1091). No SC1091 disable was present.
+    - SC2250: brace all 17 flagged unbraced ${var} references (16 lines).
+    - R-034: false positive at the '<blockquote>... ; echo $?</blockquote>'
+      HTML literal -- 'echo $?' is displayed text shown to the user as the
+      command to run, not a shell command; added '## style-ok: allow-echo'
+      waiver, displayed text left unchanged.
+    - R-010: not applicable; sourced fragment carries the existing
+      '## style-ok: no-strict' waiver (systemcheck owns the strict preamble).
+
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+commit a8d9f4c4137b3bdbb6741b3eab9728840f8f5d6b
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Fri Aug 21 09:02:07 2026 +0000
+
+    bumped changelog version
+
+commit b0030497dcc22cfbc081d97002079d8a1deebf06
+Author: claude (dev272 e8b76afb-795c-4739-8ebd-023de854021e) <noreply@anthropic.com>
+Date:   Fri Aug 21 04:41:28 2026 -0400
+
+    systemcheck: source helper-scripts via HELPER_SCRIPTS_PATH, drop SC1091 disable
+
+    - canary, canary-daemon: use
+      source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/<f>;
+      drop the dead '# shellcheck disable=SC1091' and the stale sibling note.
+    - completed pre-existing whole-file style debt: R-010 (export LC_ALL=C),
+      R-013 (set -e -> set -o errexit).
+
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+commit a093d92ae10dc89db33ed9f9ba1df2afdfd2ff8b
+Merge: 17dce61 3f03558
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Tue Aug 18 23:55:38 2026 -0400
+
+    Merge remote-tracking branch 'org-ai-assisted/ai'
+
+commit 3f03558c1adc2c66c1398a790927e7e829c2ad4c
+Author: claude (dev226 179d234f-88ec-4eaa-993f-32d2ac59580e) <noreply@anthropic.com>
+Date:   Tue Aug 18 12:39:59 2026 -0400
+
+    apparmor: permit check_audio to run pw-play under the systemcheck profile
+
+    check_audio (the verbose audio self-test) execs pw-play (a symlink to pw-cat)
+    under the enforced /usr/bin/systemcheck profile, which did not allow it -- so
+    AppArmor DENIED the exec (AVC name=/usr/bin/pw-cat, exit 126) and the test
+    false-warned "could not play the test sound" on every enforced system. Allow
+    pw-play/pw-cat (rUx -- unconfined, as PipeWire client access is broad and
+    version-specific; same treatment as the other external helpers) and read on the
+    test sound file. Verified in the sandbox: the AVC is gone and the test now
+    reports OK.
+
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+commit 0a0a151934b1d986f189649beb1be1656add94bf
+Author: claude (dev226 179d234f-88ec-4eaa-993f-32d2ac59580e) <noreply@anthropic.com>
+Date:   Tue Aug 18 01:34:55 2026 -0400
+
+    check_tor_bootstrap: fill empty whonix_firewall status label
+
+    - The pending branch set whonix_firewall_status_word but left
+      whonix_firewall_status_notification empty, so the emitted
+      "whonix_firewall status:" line rendered a dangling empty value on
+      non-gateway systems. Give it a value.
+    - R-020/R-013 brace + arithmetic-$ cleanup across the touched file.
+
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+commit 9b05596c9d401abe7e8bc281e49d8a49dbc0ddf9
+Author: claude (dev226 179d234f-88ec-4eaa-993f-32d2ac59580e) <noreply@anthropic.com>
+Date:   Tue Aug 18 01:34:52 2026 -0400
+
+    check_audio: verbose-only PipeWire audio self-test
+
+    - New check_audio fragment: under --verbose, play a short test sound so the
+      user can confirm audio output works.
+    - pw-play (PipeWire) only; PipeWire is the -gui variants' audio stack. Absent
+      pw-play (cli/server/gateway) or a missing sound file is an info-skip, not a
+      failure. Playback bounded by timeout so a stuck backend cannot stall the run.
+    - Sound file: /usr/share/sounds/freedesktop/stereo/audio-test-signal.oga from
+      sound-theme-freedesktop, added to Depends.
+    - Wire check_audio into the main run; R-020/R-013 brace + long-set cleanup on
+      the touched driver lines.
+
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+commit 7ee9cc77ec2cfcfc4faf7858b3ef8a2505385301
+Merge: 0375cab 17dce61
+Author: claude (dev226 179d234f-88ec-4eaa-993f-32d2ac59580e) <noreply@anthropic.com>
+Date:   Tue Aug 18 00:31:07 2026 -0400
+
+    Merge branch 'master' into ai
+
+commit 17dce61115073c0267f53bca66bbe0c5c2c61a14
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Aug 17 04:26:32 2026 +0000
+
+    bumped changelog version
+
+commit 2609626b084d66d4b2caec2f139745b0536af59b
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sun Aug 16 01:42:48 2026 -0400
+
+    apparmor
+
+commit 786aa99631105828241e2033cc5bee0108f81395
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sun Aug 16 01:34:17 2026 -0400
+
+    fix
+
+commit 3d4175cde88e53910ad16fe7b75d1224d44b00c0
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sat Aug 15 11:25:14 2026 -0400
+
+    consistency
+
+commit 10d5f5323c0c4186b149eb8ceb211ac58f3bc0e5
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sat Aug 15 11:24:27 2026 -0400
+
+    refactoring
+
+commit 15c3ae8b6f6d1d48a4dd761c5466bfe68799c81e
+Merge: 32d31c2 7b3b62c
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sat Aug 15 10:26:29 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
+
+commit 7b3b62c12c4412a9114cfc12621999e08706ecfe
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Fri Aug 14 14:51:46 2026 -0400
+
+    Unbreak Qubes VM type detection when setting qubes_starter_first_part
+
+commit 32d31c2199e664abc6073ec577982b11d7fe5fc8
+Merge: 5641f59 4b518aa
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Wed Aug 12 03:21:08 2026 -0400
+
+    Merge remote-tracking branch 'ArrayBolt3/arraybolt3/trixie'
+
+commit 4b518aac185aed4ded579dafaddeae54db14b0f2
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Mon Aug 10 23:45:01 2026 -0400
+
+    Overhaul the AI-generated overhaul
+
+commit 0375cab604cf98a2ef542b6ccd53f9f62f184dde
+Author: claude (dev182 e09ec5cf-4ebf-4e1b-88e5-55fbac6ef1d3) <noreply@anthropic.com>
+Date:   Mon Aug 10 13:56:16 2026 -0400
+
+    check_tor_running: keep exit_code across systemctl status
+
+    systemctl status returns non-zero when tor@default is not active.
+    Under errexit that aborted exit_function before it could return the
+    preserved exit_code, masking the real status code. Tolerate the
+    non-zero status with || true so the intended exit_code is returned.
+
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+commit 12e2f9ee68b0ef29744eabb087c77562609e1f50
+Merge: bb35ec3 04b3390
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Sun Aug 9 12:30:16 2026 -0400
+
+    Merge branch 'ai' into arraybolt3/trixie
+
+commit 04b33904b3853e3f8efe01c987e2517348e0be65
+Merge: c27cd77 5641f59
+Author: claude (dev163 38f9745c-aed1-4fb4-b6ae-9899f20f8de2) <noreply@anthropic.com>
+Date:   Fri Aug 7 14:47:55 2026 -0400
+
+    Merge remote-tracking branch 'org-ai-assisted/master' into ai
+
+commit c27cd770352c3341c4ac4488f0550f3c3f83617a
+Author: claude (dev163 38f9745c-aed1-4fb4-b6ae-9899f20f8de2) <noreply@anthropic.com>
+Date:   Fri Aug 7 14:47:12 2026 -0400
+
+    declare helper-scripts: get_colors.sh is sourced unconditionally
+
+    The get_colors.sh port replaced inline 'tput' colour handling with a source of
+    another package's file. It did not declare the new dependency, so on a minimal
+    install the affected commands exit at the source line -- a breakage introduced
+    by the port itself, not a pre-existing one.
+
+    Affected, and introduced here:
+      kicksecure-base-files  usr/bin/kicksecure
+      whonix-base-files      usr/bin/whonix
+      tor-ctrl               usr/bin/tor-ctrl-circuit, usr/bin/tor-ctrl-stream
+
+    None of the three had any path to helper-scripts in Depends.
+
+    systemcheck is also included, but was NOT broken: its six check_*.bsh files
+    already sourced get_colors.sh before this work, and it reaches helper-scripts
+    transitively through dist-base-files. A direct unconditional source still
+    deserves a direct dependency.
+
+    user-sysmaint-split is deliberately NOT changed. Its one source is in
+    profile.d_20_sysmaint_warn.sh and carries '|| true', so it degrades instead of
+    failing -- and it runs in every login shell, where failing closed would be far
+    worse.
+
+    Found by codex, on whonix-base-files only. The other packages came from grepping
+    for the same pattern.
+
+    Testing
+    -------
+
+    A cross-package check rather than a per-package one, since the omission can
+    recur in any package that adopts get_colors.sh:
+
+      7 package(s) source get_colors.sh unguarded; fail=0
+
+    It only considers UNGUARDED sources -- a '||' fallback is exempt, which is what
+    excludes user-sysmaint-split -- and it refuses to pass when it finds no sources
+    at all, so a wrong path reports failure rather than a silent green.
+
+    Canary: removing helper-scripts from whonix-base-files gives
+      FAIL: whonix/whonix-base-files  sources get_colors.sh unguarded but does NOT
+            declare helper-scripts
+            usr/bin/whonix
+    and exits 1.
+
+commit 8ad9333ffaf7dfb03e72e581079eda8659673395
+Author: claude (dev163 38f9745c-aed1-4fb4-b6ae-9899f20f8de2) <noreply@anthropic.com>
+Date:   Fri Aug 7 07:17:00 2026 -0400
+
+    fix shellcheck directives for an isolated CI checkout
+
+    The gate passed locally but failed (or would fail) in CI. Cause: CI checks
+    each repo out ALONE, while locally they sit side by side as submodules
+    under derivative-maker/packages. A '# shellcheck source=' climbing out of
+    the repo ('../../../../helper-scripts/...') therefore resolves here and
+    not there, so shellcheck reports SC1091 and the gate fails on a commit
+    that looked clean.
+
+    The source= paths are kept -- they document where the file actually lives
+    -- and each is paired with a 'disable=SC1091' so an absent sibling is
+    tolerated. Same shape already used in security-misc master.
+
+    Follow-on findings from the same isolated run, each with a stated reason
+    rather than a blanket waiver:
+    - SC2154 on systemd_notify: assigned by the sourced systemd-notify.bsh,
+      which shellcheck can no longer follow.
+    - SC2034 on SCRIPTNAME and output_cmd: genuinely unused. suspend-pre's
+      output_cmd toggle is vestigial -- unlike suspend-post the script prints
+      directly -- flagged rather than removed, since wiring it up or dropping
+      it is a maintainer call.
+    - SC1090 on the uwt.d conf glob: a dynamic source, which R-081 prescribes
+      SC1090 for.
+
+    Verified with a new reproducer, ~/strict-pass-tests/ci-repro.sh, which
+    clones the repo on its own and runs the real gate there -- the condition
+    CI actually sees. All six repos: gate exit 0.
+
+    Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+
+commit 58e7e554fdcf9800598f7cf5e2c30c9a1c133a29
+Author: claude (dev163 38f9745c-aed1-4fb4-b6ae-9899f20f8de2) <noreply@anthropic.com>
+Date:   Wed Aug 5 13:23:54 2026 -0400
+
+    systemcheck: R-010 strict mode for the standalone scripts
+
+    Covers the six scripts that are executed directly. The 56 '*.bsh' modules
+    are NOT touched: 'systemcheck' sources them through a
+    'for i in /usr/libexec/systemcheck/*.bsh; do source "$i"; done' loop, so
+    they are fragments that run under the parent's shell options and must not
+    carry their own.
+
+    Real nounset traps fixed in 'canary', all four on paths that read a
+    variable only some branches assign:
+    - known_virtualizer   -- set only on the recognised-virtualizer branches
+    - canary_base_api_link -- environment-overridable, read by a '-n' test
+    - qubes_vm_persistence -- set only inside Qubes
+    - LASTRUN              -- set only when the state file exists
+    - canary_run           -- see below
+    Verified by deleting the defaults again and observing the abort return.
+
+    canary_run comes from the canary-run-or-not fragment, whose every branch
+    only ever assigns 'false'; in the enabled case it leaves the name unset.
+    The default is applied in canary rather than in that fragment on purpose:
+    check_warrant_canary.bsh sources it as well, from the not-yet-strict
+    systemcheck parent, and a strict-mode block inside a sourced file would
+    change that caller's shell options out from under it.
+
+    Note a behaviour improvement: canary defines an ERR trap, but without
+    'errtrace' an ERR trap does not fire inside shell functions, so
+    error_handler was effectively dead code. It now reports the failing
+    command. Exit codes are unchanged.
+
+    Also in canary: echo -> printf (R-034), 'has' instead of 'command -v'
+    (R-090, sourcing has.sh since check_runtime.bsh does not provide it),
+    SC2128 "${FUNCNAME[0]}", SC2004, SC2250 braces.
+    check-env: TMP/TMPDIR are exactly what that script tests, so they are now
+    read nounset-safely -- an unset value is a reportable failure there, not a
+    reason to abort -- plus a no-tmp-hardcode waiver, since the '/tmp/user/0'
+    literals are the expected value being asserted.
+
+    Differentially sandbox-tested old vs new, comparing output AND exit code:
+    pkexec-test (0), check_tor_running (3), check-env (1) byte-identical; the
+    only delta is canary's new error_handler diagnostic.
+
+    Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+
+commit 5641f5915855099623b9074b7bcb283ae0fe008b
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sat Aug 1 08:43:39 2026 +0000
+
+    bumped changelog version
+
 commit 2b989c73c907cd4a78fd4519216eac1a16485d8f
 Merge: c65d2db bde12b5
 Author: Patrick Schleizer <adrelanos@whonix.org>
