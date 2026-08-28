@@ -105,7 +105,7 @@ check_privilege_escalation_tool_do() {
 
    ## style-ok: allow-echo
    ## 'echo $?' below is literal text inside an HTML <blockquote>, shown to the
-   ## user as the command to run -- not a shell command in this script.
+   ## user as the command to run.
    local MSG="<p>Check '<code>${privilege_escalation_tool_first_argument}</code>' result: System misconfiguration detected. No need to panic. This is not a severe issue. However, other tests may be affected due to this.
 <br><br>
 The following command:

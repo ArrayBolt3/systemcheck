@@ -9,13 +9,13 @@
 ## using the non-uwt-wrapped version, if the uwt wrapper is installed,
 ## which is the case on a default Whonix installation
 
-if command -v curl.anondist-orig &>/dev/null ; then
+if has curl.anondist-orig ; then
    CURL=curl.anondist-orig
 else
    CURL=curl
 fi
 
-if command -v apt-get.anondist-orig &>/dev/null ; then
+if has apt-get.anondist-orig ; then
    APT_GET=apt-get.anondist-orig
 else
    APT_GET=apt-get

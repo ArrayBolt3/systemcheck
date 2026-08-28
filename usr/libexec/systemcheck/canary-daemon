@@ -18,8 +18,6 @@ source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/light_sleep.bsh
 # shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/systemd-notify.bsh
 source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/systemd-notify.bsh
 
-## systemd_notify is assigned by the sourced systemd-notify.bsh above.
-# shellcheck disable=SC2154
 "${systemd_notify[@]}" --pid="$$" --ready
 
 while true; do
