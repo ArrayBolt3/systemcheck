@@ -141,10 +141,6 @@ check_tor_bootstrap_init() {
    ## Read sdwdate's own last onion-time-pre-script report rather than running
    ## the script here, so we don't trigger clock corrections and other side
    ## effects.
-   ##
-   ## TODO: (for humans, not AI): The new preparation_output file is only
-   ## written by the code in sdwdate's org-ai-assisted ai branch. Verify that
-   ## the implementation there can be handled properly here.
    onion_time_pre_script_output=""
    if [ -f /run/sdwdate/preparation_output ]; then
       onion_time_pre_script_output="$(cat /run/sdwdate/preparation_output)" || true
