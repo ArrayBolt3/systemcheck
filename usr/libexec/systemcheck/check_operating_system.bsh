@@ -21,7 +21,7 @@ check_operating_system() {
    local update_documentation_link_x="<a href=${PROJECT_HOMEPAGE}/wiki/Update>Debian Package Update</a>"
    local update_documentation_link_cli="( Documentation: ${PROJECT_HOMEPAGE}/wiki/Update )"
    local update_command
-   if command -v upgrade-nonroot >/dev/null 2>&1 ; then
+   if has upgrade-nonroot ; then
       update_command="upgrade-nonroot"
    else
       update_command="sudo apt-get update && sudo apt-get dist-upgrade"

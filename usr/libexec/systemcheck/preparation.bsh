@@ -127,7 +127,7 @@ virtualizer_detection() {
 
    systemcheck_platform_or_virtualizer_known=false
 
-   if ! command -v "$systemcheck_virt_detection_tool" >/dev/null 2>&1 ; then
+   if ! has "$systemcheck_virt_detection_tool" ; then
       systemcheck_virtualizer_tool_unavailable="true"
       systemcheck_virtualizer_detected="unknown"
       return 0
@@ -385,7 +385,7 @@ preparation() {
    [ -n "$who_ami" ] || who_ami="$(whoami)"
 
    ## required by virtualizer_detection
-   if command -v qubesdb-read >/dev/null 2>&1 ; then
+   if has qubesdb-read ; then
       qubes_detected="true"
    else
       qubes_detected="false"

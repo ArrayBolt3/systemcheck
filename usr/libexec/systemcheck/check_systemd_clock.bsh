@@ -7,7 +7,7 @@
 ## Sourced fragment; 'systemcheck' owns the strict-mode preamble.
 
 check_systemd_clock() {
-   if ! command -v timedatectl >/dev/null 2>&1 ; then
+   if ! has timedatectl ; then
       local MSG="<p>Systemd Clock Check Result: <code>timedatectl</code> not available, $status_ok</p>"
       run_if_verbose emit_message info "$MSG"
       return 0
