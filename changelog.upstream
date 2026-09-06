@@ -1,3 +1,70 @@
+commit 5b2318c3e5cc156071b375bcc1813a42a1ac7d1b
+Merge: 9ba531c 90d1c70
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sun Aug 30 10:16:37 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
+
+commit 9ba531c6f789649f8bdafb6792fc0d0e63651f8e
+Merge: f398ff4 eb555e4
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sun Aug 30 01:18:32 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/org-ai-assisted/ai'
+
+commit 90d1c70a07679056ba5d4ec104f3945a04a5827c
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Fri Aug 28 01:36:32 2026 -0400
+
+    Remove TODO, checked sdwdate code related to preparation_output and it looks like it will work
+
+commit 4a1da2974275142547de3a7c23b8978103a5593d
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Thu Aug 27 20:18:36 2026 -0400
+
+    Polish, add some TODOs (check_audio in particular needs a new feature to be safe)
+
+commit 031570f6e699c6083d6a21463a9666bc07f90e52
+Merge: 7b3b62c eb555e4
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Wed Aug 26 23:46:16 2026 -0400
+
+    Merge branch 'ai' into arraybolt3/trixie
+
+commit eb555e401c59a19bcf9dbb0d0f01f8ed2682e530
+Merge: 38d88c5 f398ff4
+Author: claude (dev330 8a79e544-3bae-4c03-bf93-6843ad554f4d) <noreply@anthropic.com>
+Date:   Tue Aug 25 01:25:41 2026 -0400
+
+    Merge branch 'master' into ai
+
+commit 38d88c5c05010d7e9ac4b0fcd3cabe9d399d35fc
+Author: claude (dev320 3da4f74c-4233-4462-b801-e375b347f43d) <noreply@anthropic.com>
+Date:   Mon Aug 24 23:53:10 2026 -0400
+
+    check_tor_bootstrap: require a regular preparation_output file
+
+    - '-f' not '-e': a FIFO/device at the path would make the unbounded 'cat'
+      block systemcheck; the old leaprun path had a 5s timeout.
+
+commit f398ff41b8b259808d16dc524df0cbf79efc68f8
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Tue Aug 25 03:33:04 2026 +0000
+
+    bumped changelog version
+
+commit fc35eb5bae09ac58b203cacb8fd48a4d8e67d490
+Author: claude (dev320 3da4f74c-4233-4462-b801-e375b347f43d) <noreply@anthropic.com>
+Date:   Mon Aug 24 23:30:12 2026 -0400
+
+    read sdwdate's onion-time-pre-script output
+
+    - Re-running onion-time-pre-script here was a second copy of the Tor
+      bootstrap chain, always SIGKILLed at 5s so the shown output was
+      truncated, and would fire its anondate-set / newnym side effects if
+      given time to complete.
+    - sdwdate now persists the real output; read that file instead.
+
 commit 59fae9d5db0d81afcced034084a6d1675f311fee
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Aug 24 03:17:37 2026 -0400
