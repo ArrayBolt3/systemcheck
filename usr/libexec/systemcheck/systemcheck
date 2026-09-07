@@ -59,9 +59,9 @@ bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/pkg_manager_runnin
 # shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/pkg_manager_running_check
 source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/pkg_manager_running_check
 
-bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.sh
-# shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/has.sh
-source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.sh
+bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.bsh
+# shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/has.bsh
+source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.bsh
 
 ## provides: is_whole_number
 ## provides: br_add
