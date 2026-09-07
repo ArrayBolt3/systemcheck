@@ -41,7 +41,7 @@ $reason"
    fi
 
    mokutil_present='y'
-   if ! command -v mokutil >/dev/null; then
+   if ! has mokutil ; then
       mokutil_present='n'
    fi
 
