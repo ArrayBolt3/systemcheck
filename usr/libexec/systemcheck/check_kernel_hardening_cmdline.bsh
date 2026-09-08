@@ -105,14 +105,52 @@ check_kernel_hardening_cmdline() {
       'rd.shell=0'
    )
 
+   ## For a 'key=value' style parameter (most of the list) the Linux kernel
+   ## cmdline parser applies LAST-OCCURRENCE-WINS: if the key appears more
+   ## than once (e.g. a later boot-config layer appends a conflicting
+   ## override after security-misc's own fragment), the value that actually
+   ## takes effect is the LAST one, not the first. A plain substring/word
+   ## check would still see the FIRST (hardened) occurrence and misreport
+   ## "Present" while the kernel actually applied the overriding value --
+   ## exactly the silent-drift case this check exists to catch. So build a
+   ## key -> last-value map by walking the real cmdline in order, and compare
+   ## each 'key=value' token against that map instead of a raw substring
+   ## search. Flag-only tokens (no '=': slab_nomerge, erst_disable,
+   ## extra_latent_entropy) have no override semantics and keep the
+   ## whole-word presence check.
+   local -a cmdline_words
+   read -r -a cmdline_words <<<"${kernel_cmdline}"
+   local -A cmdline_last_value=()
+   local word word_key word_value
+   for word in "${cmdline_words[@]}"; do
+      case "${word}" in
+         *=*)
+            word_key="${word%%=*}"
+            word_value="${word#*=}"
+            cmdline_last_value["${word_key}"]="${word_value}"
+            ;;
+      esac
+   done
+
    local -a missing_tokens=()
-   local token
+   local token token_key token_value
    for token in "${hardening_tokens[@]}"; do
-      case " ${kernel_cmdline} " in
-         *" ${token} "*)
+      case "${token}" in
+         *=*)
+            token_key="${token%%=*}"
+            token_value="${token#*=}"
+            if [ "${cmdline_last_value[${token_key}]:-}" != "${token_value}" ]; then
+               missing_tokens+=("${token}")
+            fi
             ;;
          *)
-            missing_tokens+=("${token}")
+            case " ${kernel_cmdline} " in
+               *" ${token} "*)
+                  ;;
+               *)
+                  missing_tokens+=("${token}")
+                  ;;
+            esac
             ;;
       esac
    done
