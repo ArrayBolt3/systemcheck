@@ -289,6 +289,10 @@ systemcheck_main() {
    systemcheck_progress_main_increment "1"
 
    ## uses network: no
+   systemcheck_run_function check_kernel_hardening_cmdline ## check_kernel_hardening_cmdline
+   systemcheck_progress_main_increment "1"
+
+   ## uses network: no
    systemcheck_run_function check_login_security ## check_login_security
    systemcheck_progress_main_increment "1"
 
