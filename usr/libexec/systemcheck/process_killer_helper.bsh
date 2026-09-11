@@ -3,13 +3,15 @@
 process_killer_helper() {
    if [ "$(type -t error_handler)" = "function" ]; then
       ## Error handler already implemented. Using it.
-      trap "error_handler" ERR
+      true
    else
       ## No error available yet. Implementing one.
       error_handler() {
+         # shellcheck disable=SC2317
          echo "Error detected! BASH_COMMAND: $BASH_COMMAND | exit_code: $exit_code"
       }
    fi
+   trap "error_handler" ERR
 
    if [ "$lastpid" = "" ]; then
       return 0
