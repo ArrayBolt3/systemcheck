@@ -59,9 +59,9 @@ bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/pkg_manager_runnin
 # shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/pkg_manager_running_check
 source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/pkg_manager_running_check
 
-bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.sh
-# shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/has.sh
-source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.sh
+bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.bsh
+# shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/has.bsh
+source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/has.bsh
 
 ## provides: is_whole_number
 ## provides: br_add
@@ -216,7 +216,7 @@ systemcheck_main() {
    systemcheck_run_function systemcheck_progress_main_open
 
    ## uses network: no
-    check_packages ## check_packages
+   systemcheck_run_function check_packages ## check_packages
    systemcheck_progress_main_increment "1"
 
    ## uses network: no
@@ -286,6 +286,10 @@ systemcheck_main() {
 
    ## uses network: no
    systemcheck_run_function check_grub_security ## check_grub_security
+   systemcheck_progress_main_increment "1"
+
+   ## uses network: no
+   systemcheck_run_function check_kernel_hardening_cmdline ## check_kernel_hardening_cmdline
    systemcheck_progress_main_increment "1"
 
    ## uses network: no
