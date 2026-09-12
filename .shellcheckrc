@@ -1,0 +1,16 @@
+## systemcheck is broken up into many fragments. Shellcheck doesn't see that
+## they are connected and throws various warnings about variable use and
+## non-constant sourcing as a result.
+##
+## TODO: We may want to get rid of these.
+disable=SC2154
+disable=SC2034
+disable=SC1090
+
+## We include $/${} in arithmetic contexts as part of our coding style.
+disable=SC2004
+
+## We understand how mkdir --parents --mode=... behaves.
+disable=SC2174
+
+## SC2250 omitted by design. All variable references must use braces.
