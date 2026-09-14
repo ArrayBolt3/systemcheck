@@ -27,7 +27,7 @@ check_operating_system() {
       update_command="sudo apt-get update && sudo apt-get dist-upgrade"
    fi
    ## Running apt-get update as user (non-root).
-   ## Depends on exception set in /etc/privleap/conf.d/systemcheck.conf.
+   ## Depends on exception set in /usr/lib/privleap/conf.d/systemcheck.conf.
    ## Minimal custom script.
    local MSG="Debian Package Update Check: Checking for software updates via apt-get... $update_documentation_link_cli"
    $output_cli "${output_opts[@]}" --messagecli --typecli "info" --message "$MSG"
