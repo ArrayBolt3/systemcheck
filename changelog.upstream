@@ -1,12 +1,135 @@
+commit ea253b5588ad4c9d6f5ae3488cdd9d3e8b30d614
+Merge: a77a26f7 c0ad0520
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Sep 14 02:37:32 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
+
+commit c0ad0520e48cbd56f9906e8c94a7418f23d24169
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Sun Sep 13 18:34:47 2026 -0400
+
+    Move privleap configuration to non-conffile location
+
+commit a77a26f7e7a2c0088d333db7eea7273106a56593
+Merge: 3e1f847f b662208d
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sun Sep 13 09:44:17 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
+
+commit b662208dbe6fc01b79f7bf1f480b69d97fd069a9
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Sun Sep 13 00:47:45 2026 -0400
+
+    Make shellcheck checks stricter
+
+commit 3e1f847f58a4932743e4903b44aa2c5de188ee36
+Merge: 0fbb6991 77d9ee1b
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sat Sep 12 09:53:00 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
+
+commit 77d9ee1b015e9a2a6516ab5d2a908dc3320b8dc7
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Fri Sep 11 19:19:41 2026 -0400
+
+    Polish, fix a mishandled trap statement caught by Shellcheck, silence some other superfluous Shellcheck gripes
+
+commit 27a1d115187a1d024ef33cfbcebfedcd412568d4
+Merge: 0fbb6991 71b20ffc
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Fri Sep 11 17:41:49 2026 -0400
+
+    Merge branch 'ai' into arraybolt3/trixie
+
+commit 71b20ffce8721e206264f8777c332d1909eab4b5
+Author: claude (dev497 5326191d-88cb-4f38-a96b-e4d8ae5649d3) <noreply@anthropic.com>
+Date:   Wed Sep 9 07:48:31 2026 -0400
+
+    check_qubes/check_pvclock: fix double blank line in warnings
+
+    - A '<br/>' after a closed '</p>' renders as an extra blank line.
+    - check_qubes_vm_type (gateway + workstation): put the "if you know what you
+      are doing" text in its own '<p>' instead of '</p>' + two stray '<br/>'.
+    - check_pvclock: drop the premature '</p>' after '[2]' so the recommended-action
+      list stays one paragraph.
+    - check_qubes: declare MSG then assign (SC2155); grep via herestring not pipe
+      (R-161); annotate the intentional unquoted CURL_VERBOSE flag-or-empty.
+    - .shellcheckrc: disable SC2250 (unbraced '$var' is the fragments' style).
+
+commit 643708b22da982e5a6da7c8a75a1fe79941f4a5a
+Merge: f8abc16f 69bff4c3
+Author: claude <noreply@anthropic.com>
+Date:   Tue Sep 8 13:35:59 2026 -0400
+
+    Merge branch 'master' into ai
+
+commit f8abc16f50e50d47421f98cffec0dea1d509b67f
+Author: claude (dev483 d206676f-4970-4838-9078-31736a2517d8) <noreply@anthropic.com>
+Date:   Tue Sep 8 09:13:11 2026 -0400
+
+    Fix ai-review findings: skip routing + cmdline override
+
+    - check_packages bypassed systemcheck_run_function, so
+      --skip check_packages silently ran it anyway.
+    - kernel cmdline check now tracks the LAST occurrence of a
+      key=value token (kernel parses cmdline last-wins), not just
+      whether it appears anywhere in the string.
+
+commit dbb1d7bc26fd3bb0e08edbe3f5bdbdb2f9e27fc0
+Author: claude (dev483 d206676f-4970-4838-9078-31736a2517d8) <noreply@anthropic.com>
+Date:   Tue Sep 8 08:53:38 2026 -0400
+
+    Add runtime check for kernel cmdline hardening
+
+    - ISO could boot unhardened with no systemcheck signal; this reads
+      /proc/cmdline and flags any missing security-misc grub.d token.
+    - Token list is parsed from security-misc's own grub.d files at
+      review time (see comment), not a guessed/hand-maintained copy.
+    - Qubes gets an info note, not a silent skip: dom0 supplies its
+      cmdline, so grub.d tokens are legitimately absent there.
+
+commit 69bff4c3bbd1016bd64afe43f434d4da462c4f48
+Merge: 0fbb6991 061509e3
+Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
+Date:   Mon Sep 7 22:13:27 2026 -0400
+
+    Merge pull request #13 from org-ai-assisted/ai
+
+    rename has.sh -> has.bsh (bashism convention)
+
+commit 061509e3d2962f617d19ccdd18a8a3b94baad1e4
+Author: claude (dev474 c7439536-fad8-4884-b71a-d2f3c4c23905) <noreply@anthropic.com>
+Date:   Mon Sep 7 11:08:39 2026 -0400
+
+    rename has.sh to has.bsh (bashism convention)
+
+    Sourced helper-scripts lib uses bashisms; .bsh marks it. Path-only edit.
+
+commit e8a83f872babe6721a078292a6237516623b12a2
+Merge: eb555e40 0fbb6991
+Author: claude (dev474 c7439536-fad8-4884-b71a-d2f3c4c23905) <noreply@anthropic.com>
+Date:   Mon Sep 7 11:08:39 2026 -0400
+
+    Merge branch 'master' into ai
+
+commit 0fbb69918f797acfbdda69f614322552961c62e1
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Sun Sep 6 17:01:27 2026 +0000
+
+    bumped changelog version
+
 commit 5b2318c3e5cc156071b375bcc1813a42a1ac7d1b
-Merge: 9ba531c 90d1c70
+Merge: 9ba531c6 90d1c70a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Aug 30 10:16:37 2026 -0400
 
     Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
 
 commit 9ba531c6f789649f8bdafb6792fc0d0e63651f8e
-Merge: f398ff4 eb555e4
+Merge: f398ff41 eb555e40
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Aug 30 01:18:32 2026 -0400
 
@@ -25,14 +148,14 @@ Date:   Thu Aug 27 20:18:36 2026 -0400
     Polish, add some TODOs (check_audio in particular needs a new feature to be safe)
 
 commit 031570f6e699c6083d6a21463a9666bc07f90e52
-Merge: 7b3b62c eb555e4
+Merge: 7b3b62c1 eb555e40
 Author: Aaron Rainbolt <arraybolt3@gmail.com>
 Date:   Wed Aug 26 23:46:16 2026 -0400
 
     Merge branch 'ai' into arraybolt3/trixie
 
 commit eb555e401c59a19bcf9dbb0d0f01f8ed2682e530
-Merge: 38d88c5 f398ff4
+Merge: 38d88c5c f398ff41
 Author: claude (dev330 8a79e544-3bae-4c03-bf93-6843ad554f4d) <noreply@anthropic.com>
 Date:   Tue Aug 25 01:25:41 2026 -0400
 
@@ -84,7 +207,7 @@ Date:   Mon Aug 24 03:14:27 2026 -0400
     fix
 
 commit fedfb0a3cc137bc1ff0192487396825cc885cf8a
-Merge: a8d9f4c 8a2d568
+Merge: a8d9f4c4 8a2d5686
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Aug 24 03:13:24 2026 -0400
 
@@ -133,7 +256,7 @@ Date:   Fri Aug 21 04:41:28 2026 -0400
     Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
 
 commit a093d92ae10dc89db33ed9f9ba1df2afdfd2ff8b
-Merge: 17dce61 3f03558
+Merge: 17dce611 3f03558c
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Aug 18 23:55:38 2026 -0400
 
@@ -189,7 +312,7 @@ Date:   Tue Aug 18 01:34:52 2026 -0400
     Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
 
 commit 7ee9cc77ec2cfcfc4faf7858b3ef8a2505385301
-Merge: 0375cab 17dce61
+Merge: 0375cab6 17dce611
 Author: claude (dev226 179d234f-88ec-4eaa-993f-32d2ac59580e) <noreply@anthropic.com>
 Date:   Tue Aug 18 00:31:07 2026 -0400
 
@@ -226,7 +349,7 @@ Date:   Sat Aug 15 11:24:27 2026 -0400
     refactoring
 
 commit 15c3ae8b6f6d1d48a4dd761c5466bfe68799c81e
-Merge: 32d31c2 7b3b62c
+Merge: 32d31c21 7b3b62c1
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Aug 15 10:26:29 2026 -0400
 
@@ -239,7 +362,7 @@ Date:   Fri Aug 14 14:51:46 2026 -0400
     Unbreak Qubes VM type detection when setting qubes_starter_first_part
 
 commit 32d31c2199e664abc6073ec577982b11d7fe5fc8
-Merge: 5641f59 4b518aa
+Merge: 5641f591 4b518aac
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Aug 12 03:21:08 2026 -0400
 
@@ -265,14 +388,14 @@ Date:   Mon Aug 10 13:56:16 2026 -0400
     Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
 
 commit 12e2f9ee68b0ef29744eabb087c77562609e1f50
-Merge: bb35ec3 04b3390
+Merge: bb35ec33 04b33904
 Author: Aaron Rainbolt <arraybolt3@gmail.com>
 Date:   Sun Aug 9 12:30:16 2026 -0400
 
     Merge branch 'ai' into arraybolt3/trixie
 
 commit 04b33904b3853e3f8efe01c987e2517348e0be65
-Merge: c27cd77 5641f59
+Merge: c27cd770 5641f591
 Author: claude (dev163 38f9745c-aed1-4fb4-b6ae-9899f20f8de2) <noreply@anthropic.com>
 Date:   Fri Aug 7 14:47:55 2026 -0400
 
@@ -415,14 +538,14 @@ Date:   Sat Aug 1 08:43:39 2026 +0000
     bumped changelog version
 
 commit 2b989c73c907cd4a78fd4519216eac1a16485d8f
-Merge: c65d2db bde12b5
+Merge: c65d2db2 bde12b5e
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Aug 1 04:26:01 2026 -0400
 
     Merge remote-tracking branch 'refs/remotes/org-ai-assisted/master'
 
 commit bde12b5ee18519d5d7099a31c36f67e0ebc14078
-Merge: c65d2db 5f50310
+Merge: c65d2db2 5f50310c
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Fri Jul 31 16:00:29 2026 -0400
 
@@ -451,14 +574,14 @@ Date:   Tue Jul 28 13:21:27 2026 +0000
     bumped changelog version
 
 commit 7c8f76b9fd4c343a81cb14eb62887d2bf8e6a871
-Merge: 8290070 48fa41f
+Merge: 82900706 48fa41fd
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Jul 28 08:19:12 2026 -0400
 
     Merge remote-tracking branch 'refs/remotes/org-ai-assisted/master'
 
 commit 48fa41fde8ddcd333fab17e2b61da5c650ce1d7b
-Merge: 1bdbae6 16dfb47
+Merge: 1bdbae64 16dfb47e
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Sun Jul 26 11:42:26 2026 -0400
 
@@ -487,7 +610,7 @@ Date:   Sun Jul 26 09:15:49 2026 -0400
     Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 commit 829007065cca7b23836f588ead68efa3fce85498
-Merge: 6c74d70 1bdbae6
+Merge: 6c74d708 1bdbae64
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Jul 26 08:11:25 2026 -0400
 
@@ -506,7 +629,7 @@ Date:   Sat Jul 25 20:28:50 2026 -0400
     Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 commit 1bdbae6493abe95554f54f6782ed9e7c4e1d2500
-Merge: b0e0a86 14786c6
+Merge: b0e0a865 14786c66
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Sat Jul 25 14:36:50 2026 -0400
 
@@ -602,7 +725,7 @@ Date:   Sat Jul 25 05:10:31 2026 -0400
     Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 commit 6c74d708f2977554b58d6a4b88969ad3a51e9597
-Merge: 8146332 b0e0a86
+Merge: 8146332e b0e0a865
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Jul 23 08:18:53 2026 -0400
 
@@ -639,7 +762,7 @@ Date:   Tue Jul 21 11:09:52 2026 +0000
     bumped changelog version
 
 commit eaff9ffd44dc3822b954a609623ecedd90aba8fb
-Merge: bb35ec3 7064c93
+Merge: bb35ec33 7064c93d
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Jul 21 05:57:15 2026 -0400
 
@@ -660,7 +783,7 @@ Date:   Sun Jul 19 04:13:35 2026 -0400
     Co-authored-by: claude (dev95 d7769525-599d-4781-9f2c-f21aa34d292d) <noreply@anthropic.com>
 
 commit be10eed450f7b26f8daf645bf7a3f86b60b90a6a
-Merge: cf7bda2 17dc024
+Merge: cf7bda2c 17dc0241
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Tue Jul 14 15:56:44 2026 -0400
 
@@ -687,7 +810,7 @@ Date:   Tue Jul 14 15:12:19 2026 -0400
     Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 commit cf7bda2c46820d035079c2f2ca5ed868124d7dcf
-Merge: 8301068 7dee445
+Merge: 8301068a 7dee4456
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Tue Jul 14 14:37:56 2026 -0400
 
@@ -896,7 +1019,7 @@ Date:   Tue Jul 14 06:05:05 2026 -0400
     Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 commit 8301068a82124e38c52e82ca7e4c34bbcef67f64
-Merge: 37fef63 e8ca7e7
+Merge: 37fef63b e8ca7e75
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Tue Jul 14 05:13:45 2026 -0400
 
@@ -978,7 +1101,7 @@ Date:   Tue Jul 14 04:42:13 2026 -0400
     Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 commit 37fef63b196733c548abcebc1ad148c7bfb58698
-Merge: bb35ec3 e053bd7
+Merge: bb35ec33 e053bd76
 Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Tue Jul 14 04:36:16 2026 -0400
 
@@ -1147,7 +1270,7 @@ Date:   Sat Jun 27 14:12:59 2026 +0000
     bumped changelog version
 
 commit 78b97f335bf82149ab1747240aae7ca5d9005412
-Merge: a409205 e4c289f
+Merge: a4092057 e4c289ff
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Jun 27 10:10:19 2026 -0400
 
@@ -1200,14 +1323,14 @@ Date:   Sun May 24 14:22:51 2026 -0400
     refactoring
 
 commit f920f1f3e9273d295d6d4101be56d6622be43157
-Merge: 8b2bbd1 fb6e842
+Merge: 8b2bbd1f fb6e8426
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun May 24 13:57:49 2026 -0400
 
     Merge remote-tracking branch 'refs/remotes/org-ai-assisted/master'
 
 commit fb6e842615cbaa6d7c044acdda879b8e12e006f2
-Merge: 8b2bbd1 8b3a0a7
+Merge: 8b2bbd1f 8b3a0a7b
 Author: assisted-by-ai (Bot Account) <228987186+assisted-by-ai@users.noreply.github.com>
 Date:   Fri May 22 13:30:44 2026 -0400
 
@@ -1271,7 +1394,7 @@ Date:   Sun Apr 26 09:53:16 2026 +0000
     bumped changelog version
 
 commit 4a2c536e8a5c9d73205f041edab94a0492241026
-Merge: 82d48b8 3dbc81f
+Merge: 82d48b8c 3dbc81fe
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Apr 26 04:49:15 2026 -0400
 
@@ -1290,7 +1413,7 @@ Date:   Sat Apr 25 09:27:41 2026 +0000
     bumped changelog version
 
 commit 6b246c0a8a82157a9f6e22f416aee674d2a5af3b
-Merge: f69f05c 839a203
+Merge: f69f05c4 839a203c
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Apr 25 05:16:09 2026 -0400
 
@@ -1315,7 +1438,7 @@ Date:   Thu Apr 16 12:28:49 2026 +0000
     bumped changelog version
 
 commit c4aea769fe92b6e8c65c4c50b4732b32d1857a78
-Merge: 31ba415 5a1398f
+Merge: 31ba4156 5a1398fe
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Apr 16 01:54:39 2026 -0400
 
@@ -1340,7 +1463,7 @@ Date:   Sat Apr 11 04:26:52 2026 -0400
     code simplification
 
 commit 98970532f311a6238f325d88ccd2cb0e5b66785a
-Merge: a5fab5f 5217b86
+Merge: a5fab5f2 5217b866
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Apr 11 03:41:55 2026 -0400
 
@@ -1389,7 +1512,7 @@ Date:   Wed Apr 8 10:16:52 2026 -0400
     fix
 
 commit b312e6bbfa6a69687c969790790bb61b2486870f
-Merge: 912e233 3240183
+Merge: 912e2332 3240183e
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Apr 8 10:15:25 2026 -0400
 
@@ -1450,14 +1573,14 @@ Date:   Fri Feb 27 05:25:56 2026 -0500
     output
 
 commit 34d760798e9f4c814e5a2e901b675aafd3a47963
-Merge: 72b30d2 2a58a09
+Merge: 72b30d2b 2a58a09f
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Feb 27 05:19:24 2026 -0500
 
     Merge remote-tracking branch 'ArrayBolt3/arraybolt3/trixie'
 
 commit 2a58a09f5aea8529448143ffd8fc89ee73cf08da
-Merge: 90dbc43 72b30d2
+Merge: 90dbc431 72b30d2b
 Author: Aaron Rainbolt <arraybolt3@gmail.com>
 Date:   Mon Feb 23 19:42:39 2026 -0500
 
@@ -1476,7 +1599,7 @@ Date:   Sun Feb 22 19:51:56 2026 -0500
     Add test for if /etc, /var, and /usr are ephemeral in AppVMs
 
 commit e11dbe191c09e8c1b603451fcd7bc6ffa2ccb210
-Merge: 237fc72 f5eff9e
+Merge: 237fc724 f5eff9e6
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Feb 22 10:12:04 2026 -0500
 
@@ -1510,7 +1633,7 @@ Date:   Mon Feb 16 05:05:30 2026 -0500
     remove trailing spaces
 
 commit 29c390cd997f88a4bffb39dce0081ab61cb6b905
-Merge: 4a3f852 84c22ec
+Merge: 4a3f852a 84c22ec2
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Feb 16 05:04:33 2026 -0500
 
@@ -1609,7 +1732,7 @@ Date:   Thu Feb 12 09:55:44 2026 +0000
     bumped changelog version
 
 commit 072276d370977efaeae6fcd7f978d63d36b80670
-Merge: 85db700 00ed75c
+Merge: 85db7009 00ed75c1
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Feb 12 04:52:19 2026 -0500
 
@@ -1640,7 +1763,7 @@ Date:   Tue Feb 10 12:18:55 2026 +0000
     bumped changelog version
 
 commit 5dcbe220fa528dbc0a38be73e4422a07d4b15a81
-Merge: 9aba7b8 a76f87d
+Merge: 9aba7b81 a76f87d5
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Feb 10 07:10:23 2026 -0500
 
@@ -1653,14 +1776,14 @@ Date:   Mon Feb 9 20:02:04 2026 -0600
     Silence another journal warning, add "segfault", "killed", and "fault" checks to the log checker
 
 commit 810ccb72e636cc83b692ea0bcff1a708a89425ca
-Merge: c30196f 9aba7b8
+Merge: c30196ff 9aba7b81
 Author: Aaron Rainbolt <arraybolt3@gmail.com>
 Date:   Sun Feb 8 16:03:36 2026 -0600
 
     Merge branch 'master' into arraybolt3/trixie
 
 commit 9aba7b81b9a9409a611e4a3d5911cad1a7934df9
-Merge: c2ddaa2 6e3ff9c
+Merge: c2ddaa20 6e3ff9cd
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Feb 8 13:03:07 2026 -0500
 
@@ -1703,7 +1826,7 @@ Date:   Fri Feb 6 10:11:06 2026 +0000
     bumped changelog version
 
 commit 668f8cc413edee9462ed9b34aa4da431a79ce7df
-Merge: 10d2dc0 9a8f945
+Merge: 10d2dc0d 9a8f945f
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Feb 6 04:55:12 2026 -0500
 
@@ -1734,7 +1857,7 @@ Date:   Wed Feb 4 05:21:25 2026 -0500
     apparmor
 
 commit cf161b46b8191b46b62c6053aba0e9782ed7d851
-Merge: fc2c79b 03d4d38
+Merge: fc2c79b7 03d4d387
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Feb 4 05:19:52 2026 -0500
 
@@ -1783,7 +1906,7 @@ Date:   Thu Jan 29 10:43:39 2026 +0000
     bumped changelog version
 
 commit 4f3c89ef464720675ec0fd3d46b547e3dfe1151c
-Merge: 498e78c ec62697
+Merge: 498e78cb ec626974
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Jan 29 05:38:31 2026 -0500
 
@@ -1802,7 +1925,7 @@ Date:   Wed Jan 28 11:32:35 2026 +0000
     bumped changelog version
 
 commit 5fed043cf78dd65a64c1f04daf103f355d2cc50a
-Merge: 570299e 5f994d1
+Merge: 570299e0 5f994d12
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Jan 28 06:30:26 2026 -0500
 
@@ -1821,7 +1944,7 @@ Date:   Tue Jan 27 17:19:09 2026 +0000
     bumped changelog version
 
 commit 1524ecc244210873f487ab6b9871adf18627f7bc
-Merge: 64a38d8 8e87a57
+Merge: 64a38d8d 8e87a57a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Jan 27 11:25:56 2026 -0500
 
@@ -1840,7 +1963,7 @@ Date:   Fri Jan 23 09:48:09 2026 +0000
     bumped changelog version
 
 commit 092d69bf10caa9bde9d559df0a0877561d8783ec
-Merge: d768b46 0a1c031
+Merge: d768b463 0a1c0318
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Jan 23 04:46:26 2026 -0500
 
@@ -1871,7 +1994,7 @@ Date:   Thu Jan 22 04:42:19 2026 -0500
     output
 
 commit 79ee7f8ad83d6a08586d01d7a33a59e430d9c707
-Merge: d4068d6 181a683
+Merge: d4068d64 181a683f
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Jan 22 04:38:06 2026 -0500
 
@@ -1890,7 +2013,7 @@ Date:   Fri Jan 16 12:09:53 2026 +0000
     bumped changelog version
 
 commit 23440d458a544a9528718ce46a9acc15cb371cec
-Merge: 73ecc7d 9d76f21
+Merge: 73ecc7d3 9d76f214
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Jan 16 05:01:31 2026 -0500
 
@@ -1939,7 +2062,7 @@ Date:   Thu Jan 8 04:43:17 2026 -0500
     fix
 
 commit ca415b9a3350064a76b294de259925c026be2dd4
-Merge: 73f7f95 875fb89
+Merge: 73f7f955 875fb89a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Jan 8 04:18:19 2026 -0500
 
@@ -2002,7 +2125,7 @@ Date:   Wed Jan 7 04:48:35 2026 -0500
     improve
 
 commit 13d135125872d237aa9ef8360fd922194e4b934f
-Merge: fdea86f 1b3b534
+Merge: fdea86f5 1b3b5348
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Jan 7 04:40:05 2026 -0500
 
@@ -2099,7 +2222,7 @@ Date:   Tue Jan 6 05:30:30 2026 -0500
     fix
 
 commit ec16e1f49f6583173ca6e106df5c713c0b11fd36
-Merge: c5d4fc7 af6d42e
+Merge: c5d4fc7e af6d42eb
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Jan 6 05:25:47 2026 -0500
 
@@ -2124,7 +2247,7 @@ Date:   Sun Dec 28 06:38:39 2025 +0000
     bumped changelog version
 
 commit 79db263457872952fa95a71079563256e46cea29
-Merge: 75a5a87 0f48e98
+Merge: 75a5a876 0f48e984
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Dec 28 01:31:41 2025 -0500
 
@@ -2239,7 +2362,7 @@ Date:   Fri Dec 12 04:59:05 2025 -0500
     fix
 
 commit 6bf101c8eca05c21f446af5a41bfe6f7de1d7c38
-Merge: 13ecfbe a37f79b
+Merge: 13ecfbea a37f79b2
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Dec 12 04:49:47 2025 -0500
 
@@ -2264,7 +2387,7 @@ Date:   Mon Dec 8 12:41:52 2025 +0000
     bumped changelog version
 
 commit 1e3c6681eefc9ee6a9c1d6dff29cb13a4b262ccc
-Merge: 3a6cc8b 1518dd3
+Merge: 3a6cc8bf 1518dd34
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Dec 8 06:49:05 2025 -0500
 
@@ -2386,7 +2509,7 @@ Date:   Wed Dec 3 08:32:33 2025 +0000
     bumped changelog version
 
 commit 20e39b794868d915cb2f1d2dea1cf7687840db12
-Merge: 8d5bf95 ba82919
+Merge: 8d5bf95b ba829190
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Dec 2 06:06:19 2025 -0500
 
@@ -2435,7 +2558,7 @@ Date:   Fri Nov 28 03:55:31 2025 -0500
     fix: no longer matching `debug:` in critical messages
 
 commit 03e7f5fef31fec73efc941387c72543568b09238
-Merge: b633f44 902106c
+Merge: b633f44e 902106c6
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Nov 28 01:03:11 2025 -0500
 
@@ -2634,7 +2757,7 @@ Date:   Mon Nov 24 08:44:56 2025 +0000
     bumped changelog version
 
 commit 432dd372ff6de8bfcded0eda88b77ccfefe37053
-Merge: 4e3dfb6 62ca6c0
+Merge: 4e3dfb6b 62ca6c0b
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Nov 24 03:20:11 2025 -0500
 
@@ -2746,7 +2869,7 @@ Date:   Sun Nov 23 09:12:24 2025 +0000
     bumped changelog version
 
 commit db82f2094e35dd60e565a169916ab7d85033f8f3
-Merge: 550c151 5b2f970
+Merge: 550c151a 5b2f9700
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Nov 23 04:08:21 2025 -0500
 
@@ -2765,7 +2888,7 @@ Date:   Fri Nov 21 09:20:40 2025 +0000
     bumped changelog version
 
 commit ba54c576b4c2828a30106a4a358b65b130f8b759
-Merge: f958fac 155719d
+Merge: f958fac7 155719d0
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Nov 21 04:04:31 2025 -0500
 
@@ -2966,7 +3089,7 @@ Date:   Mon Nov 10 08:00:51 2025 +0000
     bumped changelog version
 
 commit 01144b9efe598e2c137ba789e95dab02df992f6c
-Merge: d961a23 ee562d8
+Merge: d961a239 ee562d87
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Nov 10 02:49:22 2025 -0500
 
@@ -2997,7 +3120,7 @@ Date:   Sun Nov 9 08:13:28 2025 +0000
     bumped changelog version
 
 commit 6b3d6c702d3606cccd45c73d20ab53f763a55c2d
-Merge: c9566c2 4691ce0
+Merge: c9566c2b 4691ce09
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Nov 9 03:03:33 2025 -0500
 
@@ -3130,7 +3253,7 @@ Date:   Mon Nov 3 11:32:51 2025 +0000
     bumped changelog version
 
 commit 3eb82d8263c188c66a2debd4eb99c54f87fc54cb
-Merge: e9ed306 e81afbf
+Merge: e9ed3067 e81afbf4
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Nov 3 06:32:36 2025 -0500
 
@@ -3185,7 +3308,7 @@ Date:   Mon Nov 3 04:06:40 2025 -0500
     refactoring
 
 commit 7a8ae836f9bff0a9e1e519e68510fdcc236b81cb
-Merge: cc9e3d6 1ba9baf
+Merge: cc9e3d62 1ba9baf2
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Nov 3 04:01:38 2025 -0500
 
@@ -3548,7 +3671,7 @@ Date:   Fri Oct 24 04:32:02 2025 +0000
     bumped changelog version
 
 commit dce0037fe78aee472dfebefab65b974b45c1d1cf
-Merge: c5754e7 91f2729
+Merge: c5754e76 91f27291
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Oct 24 00:23:08 2025 -0400
 
@@ -3647,7 +3770,7 @@ Date:   Sat Oct 18 09:19:52 2025 +0000
     bumped changelog version
 
 commit 80726bcc519d22a55d041805a73ef6f110a3ca5b
-Merge: 046ca2c 42f122c
+Merge: 046ca2c8 42f122c4
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Oct 18 04:45:46 2025 -0400
 
@@ -3672,7 +3795,7 @@ Date:   Mon Oct 13 13:54:05 2025 +0000
     bumped changelog version
 
 commit c658570aa4fd32a8297addda1aa0e0446e46bd28
-Merge: 9633212 b1ed725
+Merge: 96332120 b1ed7254
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Oct 13 09:25:50 2025 -0400
 
@@ -3691,7 +3814,7 @@ Date:   Fri Oct 3 19:29:22 2025 +0000
     bumped changelog version
 
 commit f3d7c28f7495ff036ceded4d366207e1163e2d89
-Merge: 966709f 8d33208
+Merge: 966709f7 8d33208d
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Oct 3 15:27:28 2025 -0400
 
@@ -3710,7 +3833,7 @@ Date:   Wed Oct 1 09:42:37 2025 +0000
     bumped changelog version
 
 commit f8267315541d776ed72fd394e8f7790dd8bfa025
-Merge: fe92235 488aabf
+Merge: fe92235f 488aabfd
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Oct 1 05:39:47 2025 -0400
 
@@ -3723,7 +3846,7 @@ Date:   Mon Sep 29 18:08:02 2025 -0500
     Make disk encryption check substantially more robust
 
 commit 29661845910e95e823ed72d23ec2184885f81696
-Merge: 7c423cc fe92235
+Merge: 7c423cc1 fe92235f
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Mon Sep 29 17:10:36 2025 -0500
 
@@ -3742,7 +3865,7 @@ Date:   Sun Sep 28 21:10:47 2025 +0000
     bumped changelog version
 
 commit f9ef7124fce139995baedff8069666633f1ee687
-Merge: 8864582 5b47515
+Merge: 88645820 5b475157
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Sep 28 17:01:29 2025 -0400
 
@@ -3761,7 +3884,7 @@ Date:   Sun Sep 28 11:17:36 2025 +0000
     bumped changelog version
 
 commit 6ded4c7f502d57eca63b2a7d44e62ef62ec2ca39
-Merge: 60b1a1d bb8e778
+Merge: 60b1a1da bb8e7787
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Sep 28 07:16:53 2025 -0400
 
@@ -3856,7 +3979,7 @@ Date:   Mon Sep 22 17:26:26 2025 +0000
     bumped changelog version
 
 commit 7e75ec971b035d4d0c115f80dec9a53ed908a64b
-Merge: 61ffc5d bf8b4d4
+Merge: 61ffc5d0 bf8b4d42
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Sep 22 13:04:48 2025 -0400
 
@@ -3905,7 +4028,7 @@ Date:   Sat Aug 30 14:20:19 2025 +0000
     bumped changelog version
 
 commit 3ae868c1c5a5205f8964662b2bc5294323306be0
-Merge: 330bdb2 20fd150
+Merge: 330bdb2c 20fd150a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Aug 30 08:01:54 2025 -0400
 
@@ -3924,14 +4047,14 @@ Date:   Wed Aug 27 19:34:10 2025 +0000
     bumped changelog version
 
 commit 4e481b122248045db20d7817e8e68f747b21319d
-Merge: 73fbe12 9de75d6
+Merge: 73fbe128 9de75d66
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Aug 27 04:33:17 2025 -0400
 
     Merge remote-tracking branch 'ArrayBolt3/arraybolt3/trixie'
 
 commit 9de75d66dae6fa1bf38a6e140ce7a65e897453b7
-Merge: 0febf95 73fbe12
+Merge: 0febf95b 73fbe128
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Tue Aug 26 19:20:56 2025 -0500
 
@@ -3956,7 +4079,7 @@ Date:   Fri Aug 22 17:55:12 2025 -0500
     Switch to using light_sleep in canary-daemon
 
 commit ed15cbfd71c2ad1d09c65e836a3d9afc17601b7e
-Merge: 317ca9d 51eaecf
+Merge: 317ca9d6 51eaecfb
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Thu Aug 21 20:14:25 2025 -0500
 
@@ -3975,7 +4098,7 @@ Date:   Wed Aug 20 10:47:31 2025 -0400
     ignore more journal messages
 
 commit 34437fedf2cb31c03f62b2c97a947c70494e4b1a
-Merge: e6c3c54 93eb4b3
+Merge: e6c3c54a 93eb4b33
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Aug 20 09:51:49 2025 -0400
 
@@ -4006,7 +4129,7 @@ Date:   Sun Aug 10 15:24:15 2025 -0500
     Move security-misc/apt-get-update* to helper-scripts
 
 commit 55a55bdcf692eb2622289160de51f80e2e68d673
-Merge: cb103e3 927c76f
+Merge: cb103e3b 927c76fa
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Sun Aug 10 14:11:13 2025 -0500
 
@@ -4031,7 +4154,7 @@ Date:   Sun Aug 10 03:25:58 2025 -0400
     fix: in `--verbose` mode, in Qubes: do exit non-zero when missing tirdad kernel module
 
 commit cb103e3b7630ac98f8210ffd072318f5a9cdaa66
-Merge: 983c52e 5e54740
+Merge: 983c52e0 5e547407
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Sat Aug 9 21:32:06 2025 -0500
 
@@ -4067,7 +4190,7 @@ Date:   Sat Jul 26 09:07:58 2025 +0000
     bumped changelog version
 
 commit ea6c4a63c089fb4128238f42f7b8c79f4a8db375
-Merge: c54effa 327d074
+Merge: c54effae 327d0741
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Jul 26 04:51:49 2025 -0400
 
@@ -4080,14 +4203,14 @@ Date:   Sat Jul 26 04:23:19 2025 -0400
     show passed su access check result only when using --verbose
 
 commit 259597e1439ce64589e0d1298fe00e593ccd52a8
-Merge: ff9e2d7 b06a292
+Merge: ff9e2d7e b06a292a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Jul 26 04:21:29 2025 -0400
 
     Merge remote-tracking branch 'ArrayBolt3/arraybolt3/su-test'
 
 commit ff9e2d7ef60171ca0f70f007b0c442c198975d71
-Merge: bc403a9 2a48c96
+Merge: bc403a94 2a48c964
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Jul 26 04:19:54 2025 -0400
 
@@ -4148,7 +4271,7 @@ Date:   Thu Jul 24 02:43:56 2025 -0400
     comment
 
 commit 076070fa0383b9463fcc8385258b9688ff5f6868
-Merge: 15585d1 51b9a52
+Merge: 15585d12 51b9a520
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Jul 24 02:16:45 2025 -0400
 
@@ -4167,7 +4290,7 @@ Date:   Sat Jul 19 09:47:55 2025 +0000
     bumped changelog version
 
 commit 198010e262c7f735d446edb06c09c6f7deea2453
-Merge: 1e0fe84 3f7c5c1
+Merge: 1e0fe845 3f7c5c13
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Jul 19 02:59:38 2025 -0400
 
@@ -4192,7 +4315,7 @@ Date:   Fri Jul 11 12:07:44 2025 +0000
     bumped changelog version
 
 commit 66559b772aab9f3a24aceadc7dbf3a79b4fb078b
-Merge: 68f0284 1c52f2f
+Merge: 68f0284d 1c52f2fc
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Jul 11 08:06:48 2025 -0400
 
@@ -4247,7 +4370,7 @@ Date:   Wed Jul 2 14:03:48 2025 -0400
     fix
 
 commit 554e14bc19be03fe48fb0c5a26851e9223b63e61
-Merge: 7bc7d11 0d9ae5b
+Merge: 7bc7d111 0d9ae5bb
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Jul 2 14:01:06 2025 -0400
 
@@ -4272,7 +4395,7 @@ Date:   Sun Jun 29 17:44:24 2025 +0000
     bumped changelog version
 
 commit 3a83bbd63a4bb5b56b9f10ab19e29f64bf41e27c
-Merge: 05bd2e8 54acf9d
+Merge: 05bd2e80 54acf9d5
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sun Jun 29 13:36:53 2025 -0400
 
@@ -4353,7 +4476,7 @@ Date:   Thu Jun 19 08:26:57 2025 -0400
     leaprun
 
 commit d5bbe988be70d31ecd1bfecff236af66030d341f
-Merge: 4fd1c1e 0ed31da
+Merge: 4fd1c1e9 0ed31da5
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Jun 19 08:22:25 2025 -0400
 
@@ -4366,14 +4489,14 @@ Date:   Sat Jun 14 11:52:11 2025 +0000
     bumped changelog version
 
 commit f61891cdb7d228e5fe26b12ddd332d08861faf3f
-Merge: 10d3ef8 2467591
+Merge: 10d3ef8d 2467591b
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Jun 13 14:51:52 2025 -0400
 
     Merge remote-tracking branch 'ArrayBolt3/arraybolt3/apparmor'
 
 commit 0ed31da5f7194a8db7eb1c9154b50fb9600866b0
-Merge: e4b17b2 2467591
+Merge: e4b17b2b 2467591b
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Thu Jun 12 11:31:56 2025 -0500
 
@@ -4386,7 +4509,7 @@ Date:   Thu Jun 12 11:31:35 2025 -0500
     Don't block the livecheck-lsblk file in the apparmor policy
 
 commit e4b17b2b67735a958d758a601f1df392273157e6
-Merge: fc9ae1d 10d3ef8
+Merge: fc9ae1d4 10d3ef8d
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Thu Jun 12 11:29:57 2025 -0500
 
@@ -4399,7 +4522,7 @@ Date:   Wed Jun 11 19:16:28 2025 +0000
     bumped changelog version
 
 commit 7bca80fcc43cdae6fbf89750f65ed8492f578eb4
-Merge: dd714b2 5466d29
+Merge: dd714b2a 5466d291
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Jun 11 15:06:27 2025 -0400
 
@@ -4764,7 +4887,7 @@ Date:   Wed May 7 05:03:24 2025 +0000
     bumped changelog version
 
 commit a96b2b480f85c2a72984527e76b71cea33758291
-Merge: e3ff240 dd26115
+Merge: e3ff2405 dd261150
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed May 7 00:41:40 2025 -0400
 
@@ -5195,7 +5318,7 @@ Date:   Wed Apr 9 15:17:02 2025 +0000
     bumped changelog version
 
 commit cfa06c60586850f28e6b52f280ff706797544a12
-Merge: 8d5ea82 664224e
+Merge: 8d5ea824 664224e6
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Apr 9 09:18:08 2025 -0400
 
@@ -5214,7 +5337,7 @@ Date:   Tue Apr 8 14:09:05 2025 +0000
     bumped changelog version
 
 commit f70ca03f5793075be1677e4d92bc82ce7d52a66f
-Merge: fecae82 a3c160b
+Merge: fecae820 a3c160bf
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Apr 8 08:05:08 2025 -0400
 
@@ -5725,7 +5848,7 @@ Date:   Fri Mar 28 09:17:18 2025 -0400
     refactoring
 
 commit 8fb6e2c2f9a9fa4fc6698069b84e56c6845e9407
-Merge: c7ff492 7810fb8
+Merge: c7ff492e 7810fb8a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Mar 28 09:10:53 2025 -0400
 
@@ -5822,7 +5945,7 @@ Date:   Thu Mar 27 04:17:50 2025 -0400
     comment
 
 commit 3bf18c161a2484d55973e7f2c3cfe67f2dc62301
-Merge: 9cb124f 525640b
+Merge: 9cb124fb 525640bc
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Mar 27 04:01:38 2025 -0400
 
@@ -5841,7 +5964,7 @@ Date:   Wed Mar 26 09:18:00 2025 +0000
     bumped changelog version
 
 commit 87a977bb44110c8338c0e0e7f392e9cc0af45233
-Merge: 06fa0bd 122ff34
+Merge: 06fa0bd6 122ff347
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Mar 26 04:39:35 2025 -0400
 
@@ -5872,7 +5995,7 @@ Date:   Wed Mar 19 11:30:27 2025 +0000
     bumped changelog version
 
 commit ca265a830e485231ca5adf3c5fa7cb65609a3813
-Merge: 2a125a2 5cf7818
+Merge: 2a125a22 5cf78182
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Wed Mar 19 07:29:13 2025 -0400
 
@@ -5903,7 +6026,7 @@ Date:   Tue Mar 18 10:57:18 2025 +0000
     bumped changelog version
 
 commit d87208f9bbbf353e1ce040c11527f9184450e160
-Merge: 5e06a84 fa76594
+Merge: 5e06a84a fa76594a
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Tue Mar 18 06:45:06 2025 -0400
 
@@ -5922,7 +6045,7 @@ Date:   Mon Mar 17 09:37:22 2025 +0000
     bumped changelog version
 
 commit 37d7da6a629b3059b2495aa2a7c134eabda70a69
-Merge: 84095e4 2f4ad80
+Merge: 84095e4b 2f4ad805
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Mar 17 05:03:49 2025 -0400
 
@@ -5959,7 +6082,7 @@ Date:   Sat Mar 15 06:21:07 2025 -0400
     improved error handling
 
 commit a1f876c2cfdbbcb54e6471df5760d7a2034f242d
-Merge: 6b9954c daf659e
+Merge: 6b9954c9 daf659ec
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Mar 15 06:19:57 2025 -0400
 
@@ -5996,7 +6119,7 @@ Date:   Wed Mar 12 19:14:53 2025 -0500
     Adjust to work with helper-scripts and user-sysmaint-split refactors
 
 commit 6f7eaaa7eb1d6d77d5949efdcb848709678a8564
-Merge: fd48928 a9d6a21
+Merge: fd48928f a9d6a21b
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Wed Mar 12 15:16:58 2025 -0500
 
@@ -6053,7 +6176,7 @@ Date:   Wed Mar 12 12:39:57 2025 -0400
     refactoring
 
 commit fd48928f7fc8f76e85989801f7200ca738d071ca
-Merge: fb501a9 d403f03
+Merge: fb501a9f d403f033
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Mon Mar 10 14:56:41 2025 -0500
 
@@ -6104,14 +6227,14 @@ Date:   Mon Mar 10 07:42:32 2025 +0000
     bumped changelog version
 
 commit fde97dba7245ec10ceae7672d8873cf0fcea65fa
-Merge: d9045df 2fa94cf
+Merge: d9045df3 2fa94cf8
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Mar 8 22:10:20 2025 -0500
 
     Merge remote-tracking branch 'github-kicksecure/master'
 
 commit 2fa94cf8e27f4be734d03188cb5ea4eebb511c25
-Merge: d9045df 5129c96
+Merge: d9045df3 5129c96f
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Sat Mar 8 22:08:42 2025 -0500
 
@@ -6152,7 +6275,7 @@ Date:   Mon Feb 24 12:24:02 2025 +0000
     bumped changelog version
 
 commit 60dc1bf64af7e3b99ba8c1ff565bb874daa8997a
-Merge: 573e300 c2b6f29
+Merge: 573e300d c2b6f29d
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Feb 24 07:23:11 2025 -0500
 
@@ -6489,7 +6612,7 @@ Date:   Fri Feb 21 09:56:46 2025 +0000
     bumped changelog version
 
 commit 228f6244d09cd0eda6de3b185b4f7b406e414f8a
-Merge: 0b1d564 9e05aae
+Merge: 0b1d5641 9e05aae6
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Fri Feb 21 04:28:24 2025 -0500
 
@@ -6580,7 +6703,7 @@ Date:   Thu Feb 6 16:22:55 2025 +0000
     bumped changelog version
 
 commit 9c7aff7b43344ac28dabf79fd43d4b28a817dbad
-Merge: f055058 c8a8b12
+Merge: f055058e c8a8b128
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Thu Feb 6 10:55:25 2025 -0500
 
@@ -6605,7 +6728,7 @@ Date:   Sat Feb 1 22:10:51 2025 -0600
     Add sdwdate as a persistent user in privleap config
 
 commit 6b680b595a4aa6b6feb2a0517274152b49d51971
-Merge: efcb255 f055058
+Merge: efcb2558 f055058e
 Author: Aaron Rainbolt <arraybolt3@ubuntu.com>
 Date:   Sat Feb 1 19:28:09 2025 -0600
 
@@ -6738,7 +6861,7 @@ Date:   Mon Nov 25 15:58:45 2024 -0500
     comment
 
 commit 68adb5e4a9e41dcf2baaa8f84ee927f90d405324
-Merge: 2f304ed 9f4296e
+Merge: 2f304edd 9f4296e9
 Author: Patrick Schleizer <adrelanos@whonix.org>
 Date:   Mon Nov 25 15:35:49 2024 -0500
 
@@ -10589,14 +10712,14 @@ Date:   Thu Oct 31 16:08:27 2019 +0000
     bumped changelog version
 
 commit fb1f0694b60c0faa639c6d2517c26d4f711a8984
-Merge: 014a3e3 48764f8
+Merge: 014a3e31 48764f86
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Wed Oct 30 00:16:21 2019 -0400
 
     Merge remote-tracking branch 'origin/master'
 
 commit 48764f86c287c7b6c7806e3002dc6a08122fa3c4
-Merge: 014a3e3 c72d21c
+Merge: 014a3e31 c72d21c2
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Wed Oct 30 04:15:55 2019 +0000
 
@@ -10794,14 +10917,14 @@ Date:   Sun Oct 6 11:34:43 2019 +0000
     refactoring
 
 commit b6954b9a75081ef5196f4de937c3e27cce56d247
-Merge: e9b69dd 7665654
+Merge: e9b69dde 7665654a
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sun Oct 6 05:21:27 2019 -0400
 
     Merge remote-tracking branch 'origin/master'
 
 commit 7665654a950aa7966b1516df06d719a510d20962
-Merge: e9b69dd 123a04f
+Merge: e9b69dde 123a04f9
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sun Oct 6 09:18:34 2019 +0000
 
@@ -10828,14 +10951,14 @@ Date:   Sat Oct 5 09:42:06 2019 +0000
     bumped changelog version
 
 commit 3c8bacb8c2b891051c5aaa7940ec531d5afa0e45
-Merge: 09ec0bd fb5cc2e
+Merge: 09ec0bd8 fb5cc2e7
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sat Oct 5 04:44:47 2019 -0400
 
     Merge remote-tracking branch 'origin/master'
 
 commit fb5cc2e721f99bee52be5f28ae4747aa38f67c01
-Merge: 09ec0bd 31ccb33
+Merge: 09ec0bd8 31ccb332
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sat Oct 5 08:43:56 2019 +0000
 
@@ -11228,14 +11351,14 @@ Date:   Thu Jun 27 07:28:44 2019 +0000
     bumped changelog version
 
 commit 6d8ec980605f0bc6342d5b6659da4e189780be18
-Merge: 81bfe23 2592424
+Merge: 81bfe23c 25924245
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Wed Jun 26 07:34:06 2019 -0400
 
     Merge remote-tracking branch 'origin/master'
 
 commit 25924245130b6dea1eb399445099550f1a3f8b03
-Merge: 81bfe23 2e93a5b
+Merge: 81bfe23c 2e93a5b7
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Wed Jun 26 11:33:33 2019 +0000
 
@@ -12013,7 +12136,7 @@ Date:   Fri Jul 6 11:22:54 2018 +0000
     formatting
 
 commit 148a3445e991babcdf2e51b2471516d2a2330ded
-Merge: b5f59b6 1bb377b
+Merge: b5f59b6b 1bb377bc
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Fri Jul 6 11:21:59 2018 +0000
 
@@ -12026,7 +12149,7 @@ Date:   Fri Jul 6 08:53:24 2018 +0000
     cleaning after merge, comment out signal rtmin, add /bin/readlink rix,
 
 commit b7436bc55d58c0e47bada4e7ba0b96a13b936897
-Merge: 45924a3 b5f59b6
+Merge: 45924a3f b5f59b6b
 Author: troubadoour <user@host.localdomain>
 Date:   Fri Jul 6 08:24:17 2018 +0000
 
@@ -12111,7 +12234,7 @@ Date:   Mon Apr 2 12:29:13 2018 +0000
     https://github.com/Whonix/whonixcheck/pull/8
 
 commit c0cd66fd9f6491d896e78dad8c9ba5faca9baaf4
-Merge: 327a228 62c77c1
+Merge: 327a228b 62c77c1e
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Mon Apr 2 12:27:55 2018 +0000
 
@@ -12247,7 +12370,7 @@ Date:   Tue Feb 20 20:56:06 2018 +0000
     add ptrace rules
 
 commit a08eae0f7d1bb7cc033f441f9424585bbf7c8fa0
-Merge: 37711c9 4c2be93
+Merge: 37711c94 4c2be936
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Tue Feb 20 14:23:14 2018 +0100
 
@@ -12260,7 +12383,7 @@ Date:   Mon Feb 19 17:43:20 2018 +0000
     + signal (send)
 
 commit 37711c9441e925289389d87458188614b8ca0470
-Merge: 8865e9e b0c710b
+Merge: 8865e9e2 b0c710b0
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sun Feb 18 23:19:34 2018 +0100
 
@@ -12279,7 +12402,7 @@ Date:   Sun Feb 18 14:07:57 2018 +0000
     bumped changelog version
 
 commit b8d884810e4095b6ee77d81ecf28f4f96f3103f0
-Merge: eefeff6 a10d7ec
+Merge: eefeff6d a10d7ecf
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sun Feb 18 14:38:52 2018 +0100
 
@@ -12292,7 +12415,7 @@ Date:   Sat Feb 17 19:22:17 2018 +0000
     open ptrace and signal
 
 commit eefeff6d9f83e996b8210a43adba3bf5327b243a
-Merge: 7fc49eb 26e5a88
+Merge: 7fc49eb5 26e5a88b
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Sun Feb 11 20:14:04 2018 +0100
 
@@ -12503,7 +12626,7 @@ Date:   Thu Jan 4 20:51:48 2018 +0000
     bumped changelog version
 
 commit 9c5fbcc82ad1089c5961693aae83d1e16c8a18b1
-Merge: 3cf1b21 1a96d45
+Merge: 3cf1b210 1a96d450
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Thu Jan 4 20:42:39 2018 +0100
 
@@ -12522,7 +12645,7 @@ Date:   Tue Jan 2 15:06:37 2018 +0000
     bumped changelog version
 
 commit bd10676271e61df5c628f2136e1d4e4a07135ddc
-Merge: 2e76c47 fb650ee
+Merge: 2e76c476 fb650ee0
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Tue Jan 2 10:07:44 2018 +0100
 
@@ -12609,14 +12732,14 @@ Date:   Fri Dec 1 01:37:39 2017 +0000
     add systemd-detect-virt
 
 commit fb439f8a8a068cc47fc3462dab603e8f8172c46c
-Merge: c9b23b2 8bdc9cb
+Merge: c9b23b2f 8bdc9cb6
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Fri Dec 1 00:06:54 2017 +0100
 
     Merge remote-tracking branch 'origin/master'
 
 commit 8bdc9cb66dac1a3b92b55a0205778960c7daea3b
-Merge: c9b23b2 0dd257c
+Merge: c9b23b2f 0dd257cb
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Thu Nov 30 21:38:18 2017 +0100
 
@@ -12722,14 +12845,14 @@ Date:   Tue Mar 28 21:38:52 2017 +0000
     fix
 
 commit df497c1892fcec2eab9f69f2e7509f4966a60f37
-Merge: 37ac2d6 5e1a1cf
+Merge: 37ac2d6b 5e1a1cfb
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Thu Mar 16 13:32:56 2017 +0100
 
     Merge remote-tracking branch 'origin/master'
 
 commit 5e1a1cfb105f5615bbd93a3cc4842c39a4ff4cdc
-Merge: 37ac2d6 15e5767
+Merge: 37ac2d6b 15e5767d
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Thu Mar 16 13:04:49 2017 +0100
 
@@ -13601,14 +13724,14 @@ Date:   Wed Jun 8 22:52:48 2016 +0000
     https://phabricator.whonix.org/T489
 
 commit 6b27e2b676cc78480731b9cc8b1bd0904192c948
-Merge: 664c12e c51cc8e
+Merge: 664c12e3 c51cc8e3
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Wed Jun 8 21:57:22 2016 +0000
 
     Merge remote-tracking branch 'origin/master'
 
 commit c51cc8e3e3bb3c92969c4f33e2b00c0ae00384b3
-Merge: 664c12e 095686f
+Merge: 664c12e3 095686fc
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Wed Jun 8 21:56:46 2016 +0000
 
@@ -13777,14 +13900,14 @@ Date:   Thu Apr 7 18:25:00 2016 +0000
     https://phabricator.whonix.org/T461
 
 commit e8d65d4a9b1bbcd6c017e5d2515046c34b921eb1
-Merge: 142621d 599de94
+Merge: 142621dc 599de94d
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Thu Apr 7 00:59:39 2016 +0000
 
     Merge remote-tracking branch 'origin/master'
 
 commit 599de94dc22fc65a4d73a3021fe62a1e192c6e01
-Merge: 142621d 76158be
+Merge: 142621dc 76158beb
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Thu Apr 7 00:59:13 2016 +0000
 
@@ -16641,7 +16764,7 @@ Date:   Tue Jun 24 12:38:09 2014 +0000
     fix path
 
 commit 320abb60794ccde10ac0b85e8b8a4194c0f13e5e
-Merge: 6bd6b56 0552235
+Merge: 6bd6b567 05522352
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Mon Jun 23 23:14:08 2014 +0000
 
@@ -16654,7 +16777,7 @@ Date:   Mon Jun 23 22:46:13 2014 +0000
     fix path
 
 commit 05522352d8d54c131f6b6d24ca4adfac769ffdb8
-Merge: 9d5b23d 46f93c8
+Merge: 9d5b23de 46f93c8b
 Author: troubadoour <trobador@riseup.net>
 Date:   Mon Jun 23 21:46:57 2014 +0000
 
@@ -16687,7 +16810,7 @@ Date:   Fri Jun 20 23:46:29 2014 +0000
     fix merge
 
 commit 16cd81a888b995eb58be7d65d935fe6bae9e5ef9
-Merge: 7fd38cc 6b5c890
+Merge: 7fd38cc8 6b5c890f
 Author: Patrick Schleizer <adrelanos@riseup.net>
 Date:   Fri Jun 20 23:40:03 2014 +0000
 
