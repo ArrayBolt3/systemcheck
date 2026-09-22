@@ -6,7 +6,8 @@ include <tunables/global>
 
 
 /usr/libexec/systemcheck/canary flags=(attach_disconnected) {
-  include <abstractions/apache2-common>
+  network inet stream,
+  network inet6 stream,
   include <abstractions/base>
   include <abstractions/bash>
   include <abstractions/python>
@@ -45,6 +46,7 @@ include <tunables/global>
   /usr/libexec/systemcheck/canary-download rix,
   /usr/libexec/systemcheck/canary-run-or-not rix,
   /usr/libexec/helper-scripts/get_writable_fs_lists.sh rix,
+  /usr/libexec/helper-scripts/settings_echo rix,
   /usr/local/etc/systemcheck.d/ r,
   /usr/local/etc/systemcheck.d/** r,
   /usr/local/etc/whonix.d/ r,
