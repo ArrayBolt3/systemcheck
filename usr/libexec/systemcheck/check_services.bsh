@@ -2,9 +2,7 @@
 
 ## Copyright (C) 2012 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
-
-## Globals are set and consumed by 'systemcheck'.
-# shellcheck disable=SC2154,SC2034
+# shellcheck disable=SC2154,SC2034  ## globals set and consumed by the sourcing 'systemcheck' orchestrator
 
 ## style-ok: no-strict
 ## Sourced fragment; 'systemcheck' owns the strict-mode preamble.
@@ -101,8 +99,9 @@ ${if_you_know_what_you_are_doing_msg}</p>"
 }
 
 check_services() {
-   ## In CI, prevent failure if some kernel modules failed to load due to
-   ## Secure Boot.
+   ## Apply the --ci tirdad-under-SecureBoot tolerance here too (idempotent), so a
+   ## standalone 'systemcheck --ci --function check_services' tolerates it even
+   ## without check_system_ready having run.
    systemcheck_modules_load_ci_tolerance
 
    check_type="system"
