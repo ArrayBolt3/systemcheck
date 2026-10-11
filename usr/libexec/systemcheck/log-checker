@@ -131,6 +131,8 @@ check_service_logs() {
 
   safe-rm --force -- "${TMPDIR}/journalctl_matched.txt"
 
+  ## Join patterns into a '|'-separated alternation regex; trailing '|' stripped by head -c-1.
+  ## style-ok: R-030
   patterns="$(printf '%s|' "${journal_ignore_patterns_list[@]}" | head -c-1)"
 
   grep --invert-match --extended-regexp --ignore-case "${patterns}" -- "${TMPDIR}/journalctl_fixed_filtered.txt" \
