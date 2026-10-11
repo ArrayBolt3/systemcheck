@@ -8,7 +8,8 @@
 # shellcheck disable=SC2154
 
 # shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/check_runtime.bsh
-if ! source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/check_runtime.bsh ; then
+source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/check_runtime.bsh || true
+if ! declare -F was_executed >/dev/null; then
    printf '%s\n' "$0: ERROR: cannot source check_runtime.bsh!" >&2
    exit 1
 fi
@@ -37,7 +38,7 @@ error_handler() {
 canary_preparation() {
    source /usr/libexec/helper-scripts/light_sleep.bsh
    source /usr/libexec/helper-scripts/live-mode.sh
-   source /usr/libexec/systemcheck/canary-run-or-not
+   source "${SYSTEMCHECK_REPO:-}/usr/libexec/systemcheck/canary-run-or-not"
 
    ## sets: systemd_notify
    source /usr/libexec/helper-scripts/systemd-notify.bsh
