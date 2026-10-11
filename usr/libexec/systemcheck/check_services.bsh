@@ -8,14 +8,18 @@
 ## Sourced fragment; 'systemcheck' owns the strict-mode preamble.
 
 check_services_do() {
-   ## The 'user' systemd manager needs a graphical/logind user session. Run headlessly
-   ## (serial console / guestcontrol / `su - user`) it has none, so the user-units query
-   ## fails as an ARTIFACT, not a real fault -> report N/A. The 'system' branch is
-   ## unaffected. The hard guard (soften only when genuinely no session) is in
-   ## systemcheck_session_detection; default 'true' keeps the check running if it never ran.
-   if [ "${check_type}" = "user" ] && [ "${systemcheck_graphical_session_present:-true}" = "false" ]; then
+   ## The 'user' units query needs a reachable per-user systemd manager. Run headlessly
+   ## (serial console / guestcontrol / `su - user` with no user bus) it has none, so the
+   ## query fails as an ARTIFACT, not a real fault -> report N/A. The 'system' branch is
+   ## unaffected. systemcheck_user_manager_present is a CONNECTIVITY verdict (a degraded but
+   ## reachable manager stays 'true'), so a real failure where the user manager IS present is
+   ## never masked. The opt-out is read HERE (after source_config), so a config override works;
+   ## the defaults keep the check running if neither ran.
+   if [ "${check_type}" = "user" ] \
+      && [ "${systemcheck_headless_autoskip:-true}" = "true" ] \
+      && [ "${systemcheck_user_manager_present:-true}" = "false" ]; then
       local MSG
-      MSG="<p>systemd '<u>user</u>' units check result: not applicable (no graphical/logind session), ${status_ok}</p>"
+      MSG="<p>systemd '<u>user</u>' units check result: not applicable (no reachable user systemd manager), ${status_ok}</p>"
       run_if_verbose emit_message info "${MSG}"
       return 0
    fi

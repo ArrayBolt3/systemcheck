@@ -13,12 +13,14 @@ check_system_ready_system() {
 }
 
 check_system_ready_user() {
-   ## The user system-ready target needs a graphical/logind user session; headless there is
-   ## none, so "is-system-running" never reaches 'running' and this WARNs as an ARTIFACT.
-   ## Report N/A when genuinely headless. Hard guard in systemcheck_session_detection;
-   ## default 'true' keeps it running if the detector never ran.
-   if [ "${systemcheck_graphical_session_present:-true}" = "false" ]; then
-      local MSG="<p>System ready check (user) Result: not applicable (no graphical/logind session), ${status_ok}</p>"
+   ## The user system-ready target needs a reachable per-user systemd manager; with no user
+   ## bus "is-system-running" never reaches 'running' and this WARNs as an ARTIFACT. Report
+   ## N/A only then. systemcheck_user_manager_present is a connectivity verdict (a degraded
+   ## but reachable manager stays 'true'), so a real failure is never masked. The opt-out is
+   ## read HERE (after source_config), so a config override works.
+   if [ "${systemcheck_headless_autoskip:-true}" = "true" ] \
+      && [ "${systemcheck_user_manager_present:-true}" = "false" ]; then
+      local MSG="<p>System ready check (user) Result: not applicable (no reachable user systemd manager), ${status_ok}</p>"
       run_if_verbose emit_message info "${MSG}"
       return 0
    fi

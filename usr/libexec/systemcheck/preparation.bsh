@@ -302,41 +302,25 @@ sysmaint_state_detection() {
 }
 
 systemcheck_session_detection() {
-  ## Is a GRAPHICAL / logind user session actually present? Some checks (the user systemd
-  ## manager, the user system-ready target) cannot pass without one, so running systemcheck
-  ## headlessly (serial console / VBox guestcontrol / `su - user`) makes them WARN as an
-  ## ARTIFACT, not a real fault. Those checks report N/A only when genuinely headless.
+  ## Is the per-user systemd MANAGER reachable? The user-context checks (user units, user
+  ## system-ready) cannot run without a user bus, so with none -- serial console / VBox
+  ## guestcontrol / `su - user` without a PAM/logind session -- they WARN as an ARTIFACT,
+  ## not a real fault. Detect that here so those checks report N/A in that case only.
   ##
-  ## HARD GUARD -- default to 'present' and soften ONLY on a confident no-session verdict, so
-  ## a real failure on a box that DOES have a graphical session is NEVER masked. Mirrors
-  ## msgcollector/msgdispatcher's graphical detection (env vars), plus a logind-level probe.
-  ## Journal access (check_journal) is privleap/journal, NOT a graphical-session dependency,
-  ## so it is deliberately NOT gated on this.
-  systemcheck_graphical_session_present='true'
-
-  ## Opt-out: a site may force these checks to always run (never auto-skip).
-  if [ "${systemcheck_headless_autoskip:-true}" != 'true' ]; then
-    return 0
+  ## This is a CONNECTIVITY probe, NOT a health probe: `systemctl --user show` answers rc 0
+  ## whenever the user bus is reachable, INCLUDING a degraded manager with failed units. So a
+  ## real failure on a tty / ssh / graphical login (user manager present, even without a
+  ## graphical-session.target or an inherited DISPLAY) is still caught, never masked -- the
+  ## HARD GUARD. Only a genuinely unreachable user manager sets present=false. The opt-out
+  ## (systemcheck_headless_autoskip) is applied at the CHECK sites, which run AFTER
+  ## source_config, so a /etc/systemcheck.d override is honored (this runs before it).
+  ##
+  ## Journal access (check_journal) goes through privleap, not the user bus, so it is NOT
+  ## gated on this.
+  systemcheck_user_manager_present='true'
+  if ! systemctl --user show --property=Version >/dev/null 2>&1; then
+    systemcheck_user_manager_present='false'
   fi
-
-  ## Any positive signal of a graphical/logind session -> present (do not mask).
-  case "${XDG_SESSION_TYPE:-}" in
-    x11|wayland)
-      return 0
-      ;;
-  esac
-  if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
-    return 0
-  fi
-  if [ "${XDG_CURRENT_DESKTOP:-}" = 'X-QUBES' ]; then
-    return 0
-  fi
-  if systemctl --user --quiet is-active graphical-session.target 2>/dev/null; then
-    return 0
-  fi
-
-  ## No positive signal: genuinely headless.
-  systemcheck_graphical_session_present='false'
 }
 
 if_you_know_what_you_are_doing_funct() {
