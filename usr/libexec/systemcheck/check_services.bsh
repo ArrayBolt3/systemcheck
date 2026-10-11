@@ -238,9 +238,12 @@ check_journal() {
    ## here is a genuine journal-read failure (privleap denial, broken journalctl, a
    ## corrupted journal). It must NOT be swallowed into an empty string that then
    ## reads as a clean journal (false green); it is surfaced below.
-   local journal_read_rc=0
-   log_output="$(leaprun log-checker-check_service_logs_this_boot)" || journal_read_rc="${?}"
-   critical_output="$(leaprun log-checker-check_critical_logs)" || journal_read_rc="${?}"
+   local journal_read_rc=0 journal_read_err="" journal_err_file
+   journal_err_file="$(mktemp)"
+   log_output="$(leaprun log-checker-check_service_logs_this_boot 2>"${journal_err_file}")" || journal_read_rc="${?}"
+   critical_output="$(leaprun log-checker-check_critical_logs 2>>"${journal_err_file}")" || journal_read_rc="${?}"
+   journal_read_err="$(cat -- "${journal_err_file}" 2>/dev/null)"
+   safe-rm --force -- "${journal_err_file}"
 
    ## Last-boot reads may legitimately fail when there is no previous boot (first
    ## boot, or a volatile / non-persistent journal): 'journalctl --boot=-1' exits
@@ -250,6 +253,22 @@ check_journal() {
    last_boot_critical_output="$(leaprun log-checker-check_critical_logs)" || true
 
    if [ "${journal_read_rc}" -ne "0" ]; then
+      ## A privleapd-CONNECT failure (no per-user privleap comm socket at
+      ## /run/privleapd/comm/<uid>) means the journal read could not RUN -- the session-less
+      ## headless artifact (serial console / guestcontrol / `su - user` with no PAM/logind
+      ## session), NOT a broken or corrupted journal. Report N/A, not a false "could not
+      ## read". A GENUINE read failure (privleapd connected, journalctl broke, journal
+      ## corrupt) carries a different error and still warns below -- so a real problem is
+      ## never masked. Gated by the opt-out so a site can force the strict result.
+      case "${journal_read_err}" in
+         *"Could not connect to privleapd"*)
+            if [ "${systemcheck_headless_autoskip:-true}" = "true" ]; then
+               local MSG_NA="<p>systemd journal check result: not applicable (privleapd unreachable -- no per-user privleap session), ${status_ok}</p>"
+               run_if_verbose emit_message info "${MSG_NA}"
+               return 0
+            fi
+            ;;
+      esac
       ## Surface the read failure -- never let it pass as a clean journal -- but do
       ## NOT stop: any critical lines that WERE captured must still be reported by the
       ## prints below. A this-boot read error must not hide a successfully-read
