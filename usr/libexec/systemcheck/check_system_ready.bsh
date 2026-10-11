@@ -2,7 +2,9 @@
 
 ## Copyright (C) 2025 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
-# shellcheck disable=SC2154,SC2034  ## globals set and consumed by the sourcing 'systemcheck' orchestrator
+
+## Globals are set and consumed by 'systemcheck'.
+# shellcheck disable=SC2154,SC2034
 
 ## style-ok: no-strict
 ## Sourced fragment; 'systemcheck' owns the strict-mode preamble.
@@ -108,8 +110,8 @@ check_system_ready_only_ignored_failed() {
 }
 
 check_system_ready() {
-   ## --ci only: tolerate a tirdad-under-Secure-Boot systemd-modules-load degrade
-   ## (module-specific), by injecting into the ignore lists before the checks run.
+   ## In CI, prevent failure if some kernel modules failed to load due to
+   ## Secure Boot.
    systemcheck_modules_load_ci_tolerance
    check_system_ready_system
    check_system_ready_user

@@ -2,14 +2,7 @@
 
 ## Copyright (C) 2025 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
-## style-ok: no-strict
-## Explicit strict options set; global 'export LC_ALL=C' omitted by design (locale forced per-command).
 
-set -o errexit
-set -o nounset
-set -o pipefail
-set -o errtrace
-shopt -s inherit_errexit
-shopt -s shift_verbose
+## style-ok: no-strict -- does nothing but exit.
 
 exit 0

@@ -155,36 +155,23 @@ check_service_logs() {
 }
 
 check_critical_logs() {
-   local hard_critical bug_token file
+   local hard_critical log_file
 
-   file="${TMPDIR}/journalctl_match_filtered.txt_br"
-   if ! test -e "${file}"; then
+   log_file="${TMPDIR}/journalctl_match_filtered.txt_br"
+   if ! test -e "${log_file}"; then
       return 0
    fi
 
-   ## Kernel-catastrophe tokens that are ALWAYS critical ("so bad they must be shown").
-   hard_critical='Bad RAM detected|self-detected stall on CPU|nouveau .* channel .* killed!'
-   ## ' BUG:' catches a kernel BUG:/oops but ALSO over-matches a userspace "Bug:"
-   ## (case-insensitive); the leading space avoids 'debug:'.
-   bug_token=' BUG:'
+   ## We search for "Oops:" rather than "BUG:" even though the "Oops:" line is
+   ## less specific, since the "BUG:" line in a kernel oops is rather
+   ## unspecific as well, and some userspace applications (i.e. Tor) use "Bug:"
+   ## in their error messages as well.
+   hard_critical='Bad RAM detected|self-detected stall on CPU|Oops:|nouveau .* channel .* killed!'
 
-   ## Critical = every hard_critical line, PLUS any ' BUG:' line that is NOT a userspace
-   ## self-declared "Non-fatal assertion" (Tor's tor_bug_occurred_() soft-assert path,
-   ## incl. its microdesc "Bug:"): a soft-assert declared itself survivable and kept
-   ## running, so it belongs in the ordinary warning tier (still emitted under --verbose,
-   ## --journal-ignore-able there), NOT force-shown as critical. The demotion is scoped to
-   ## the ' BUG:' token ONLY -- a hard_critical line that merely ALSO contains the phrase
-   ## stays critical. '|| true' keeps a no-match grep from tripping errexit (pipefail is
-   ## intentionally off); 'sort --unique' drops the overlap when a line matches both arms.
-   ## Tor non-fatal microdesc assertion reference:
-   ## https://gitlab.torproject.org/tpo/core/tor/-/issues/31364
-   {
-      grep --ignore-case --extended-regexp -- "${hard_critical}" "${file}" || true
-      grep --ignore-case --fixed-strings -- "${bug_token}" "${file}" \
-        | grep --ignore-case --invert-match --fixed-strings -- 'Non-fatal assertion' || true
-   } | sort --unique | stcatn
+   grep --ignore-case --extended-regexp -- "${hard_critical}" "${log_file}" \
+      | sort --unique | stcatn || true
 
-   safe-rm --force -- "${file}"
+   safe-rm --force -- "${log_file}"
 }
 
 journal_ignore_patterns_list=()
@@ -197,6 +184,12 @@ if [ "${check_mode}" = 'check_service_logs' ]; then
   check_service_logs "${2:-}"
 elif [ "${check_mode}" = 'check_critical_logs' ]; then
   check_critical_logs
+elif [ "${check_mode}" = 'get_failed_load_modules_list' ]; then
+  ( leaprun read-journalctl-logs-this-boot || true ) 2>&1 \
+    | sed -n "s/.*Failed to insert module '\(.*\)': Key was rejected by service/\1/p"
+elif [ "${check_mode}" = 'get_kernel_module_key_rejected_count' ]; then
+  ( leaprun read-journalctl-logs-this-boot || true ) 2>&1 \
+    | grep --fixed-strings --count 'kernel: Loading of module with unavailable key is rejected'
 else
   printf '%s\n' "$0: ERROR: Unrecognized mode '${check_mode}' specified!" >&2
   exit 1

@@ -2,7 +2,9 @@
 
 ## Copyright (C) 2025 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
-# shellcheck disable=SC2154  ## globals set by the sourcing 'systemcheck' orchestrator
+
+## Globals are set by 'systemcheck'.
+# shellcheck disable=SC2154
 
 ## style-ok: no-strict
 ## Sourced fragment; 'systemcheck' owns the strict-mode preamble.
