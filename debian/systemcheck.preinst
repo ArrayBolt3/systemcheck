@@ -2,9 +2,11 @@
 
 ## Copyright (C) 2012 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
-# shellcheck disable=SC2154  ## DPKG_MAINTSCRIPT_* provided by the dpkg maintainer-script environment
-## style-ok: no-strict
-## Debian maintainer script: errexit-only by convention; debhelper-injected snippets are not nounset/pipefail safe
+
+## DPKG_MAINTSCRIPT_* provided by the dpkg maintainer-script environment
+# shellcheck disable=SC2154
+
+## style-ok: no-strict -- Debian maintainer script.
 
 if [ -f /usr/libexec/helper-scripts/pre.bsh ]; then
    source /usr/libexec/helper-scripts/pre.bsh

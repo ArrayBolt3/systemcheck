@@ -2,8 +2,8 @@
 
 ## Copyright (C) 2025 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
-## style-ok: no-strict
-## Explicit strict options set; global 'export LC_ALL=C' omitted by design (locale forced per-command).
+
+## style-ok: no-strict -- 'export LC_ALL=C' omitted by design.
 
 ## Developer test command:
 #sudo genmkfile install && initial_wait_minutes=0 sleep_seconds=10 bash -x /usr/bin/updatecheck-daemon
@@ -44,8 +44,7 @@ while true; do
    "${systemd_notify[@]}" --pid="$$" WATCHDOG=1
 
    if [ -o xtrace ]; then
-      ## Propagate xtrace to the child via SHELLOPTS (shebang-invoked, no interpreter prepend).
-      env SHELLOPTS="${SHELLOPTS:-}:xtrace" /usr/bin/updatecheck &
+      env SHELLOPTS="${SHELLOPTS:+"${SHELLOPTS}:"}xtrace" /usr/bin/updatecheck &
    else
       /usr/bin/updatecheck &
    fi
