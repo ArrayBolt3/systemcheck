@@ -37,6 +37,7 @@ check_secure_boot() {
    fi
 
    if ! [ -d /sys/firmware/efi ]; then
+      run_if_verbose emit_status_line info "Firmware" "${link_sb}" orange "BIOS"
       run_if_verbose emit_status_line info "Secure Boot" "${link_sb}" orange "Unavailable" "
 
 ${reason}"
@@ -68,6 +69,15 @@ ${reason}"
 
 Debugging information:
 mokutil_output: '${mokutil_output}'"
+   fi
+
+   ## Firmware boot lane evidence (BIOS / UEFI / UEFI+SecureBoot). Verbose-only like the
+   ## other sub-status lines, so it never affects the non-verbose check verdict; reuses the
+   ## EFI-dir discriminator (BIOS branch above) and the Secure Boot state computed above.
+   if [ "${secure_boot_status_enabled}" = 'true' ]; then
+      run_if_verbose emit_status_line info "Firmware" "${link_sb}" green "UEFI+SecureBoot"
+   else
+      run_if_verbose emit_status_line info "Firmware" "${link_sb}" orange "UEFI"
    fi
 
    if [ "${mokutil_present}" = 'y' ]; then
