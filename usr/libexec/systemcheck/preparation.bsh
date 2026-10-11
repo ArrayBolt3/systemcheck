@@ -315,8 +315,10 @@ systemcheck_session_detection() {
   ## (systemcheck_headless_autoskip) is applied at the CHECK sites, which run AFTER
   ## source_config, so a /etc/systemcheck.d override is honored (this runs before it).
   ##
-  ## Journal access (check_journal) goes through privleap, not the user bus, so it is NOT
-  ## gated on this.
+  ## Journal access (check_journal) goes through privleap, not the user bus. Its
+  ## privleapd-unreachable N/A exception is nonetheless gated on this verdict as headless
+  ## EVIDENCE (present=false), not as the read mechanism: a privleapd failure in a NORMAL
+  ## session (manager present) is a real fault and still warns, never a false green.
   systemcheck_user_manager_present='true'
   if ! systemctl --user show --property=Version >/dev/null 2>&1; then
     systemcheck_user_manager_present='false'

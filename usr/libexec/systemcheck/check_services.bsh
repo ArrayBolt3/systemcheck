@@ -254,15 +254,19 @@ check_journal() {
 
    if [ "${journal_read_rc}" -ne "0" ]; then
       ## A privleapd-CONNECT failure (no per-user privleap comm socket at
-      ## /run/privleapd/comm/<uid>) means the journal read could not RUN -- the session-less
-      ## headless artifact (serial console / guestcontrol / `su - user` with no PAM/logind
-      ## session), NOT a broken or corrupted journal. Report N/A, not a false "could not
-      ## read". A GENUINE read failure (privleapd connected, journalctl broke, journal
-      ## corrupt) carries a different error and still warns below -- so a real problem is
-      ## never masked. Gated by the opt-out so a site can force the strict result.
+      ## /run/privleapd/comm/<uid>) is a benign artifact ONLY in a session-less headless
+      ## context (serial console / guestcontrol / `su - user` with no PAM/logind session),
+      ## where the journal read could not RUN -- NOT a broken or corrupted journal. Report
+      ## N/A only then: require headless EVIDENCE (systemcheck_user_manager_present=false),
+      ## matching the sibling user-units skip above, so a privleapd that is genuinely DOWN in
+      ## a NORMAL session (user manager present) still warns below instead of a false green.
+      ## A GENUINE read failure (privleapd connected, journalctl broke, journal corrupt)
+      ## carries a different error and also warns -- so a real problem is never masked. Gated
+      ## by the opt-out so a site can force the strict result.
       case "${journal_read_err}" in
          *"Could not connect to privleapd"*)
-            if [ "${systemcheck_headless_autoskip:-true}" = "true" ]; then
+            if [ "${systemcheck_headless_autoskip:-true}" = "true" ] \
+               && [ "${systemcheck_user_manager_present:-true}" = "false" ]; then
                local MSG_NA="<p>systemd journal check result: not applicable (privleapd unreachable -- no per-user privleap session), ${status_ok}</p>"
                run_if_verbose emit_message info "${MSG_NA}"
                return 0
