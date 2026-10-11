@@ -18,6 +18,7 @@ systemcheck_autostart_functions+=" input_detection "
 systemcheck_autostart_functions+=" root_check "
 systemcheck_autostart_functions+=" msgdispatcher_init "
 systemcheck_autostart_functions+=" sysmaint_state_detection "
+systemcheck_autostart_functions+=" systemcheck_session_detection "
 systemcheck_autostart_functions+=" cleanup "
 
 ## Standard success token: a green "OK." rendered in BOTH the GUI (<font>) and
@@ -300,6 +301,44 @@ sysmaint_state_detection() {
   fi
 }
 
+systemcheck_session_detection() {
+  ## Is a GRAPHICAL / logind user session actually present? Some checks (the user systemd
+  ## manager, the user system-ready target) cannot pass without one, so running systemcheck
+  ## headlessly (serial console / VBox guestcontrol / `su - user`) makes them WARN as an
+  ## ARTIFACT, not a real fault. Those checks report N/A only when genuinely headless.
+  ##
+  ## HARD GUARD -- default to 'present' and soften ONLY on a confident no-session verdict, so
+  ## a real failure on a box that DOES have a graphical session is NEVER masked. Mirrors
+  ## msgcollector/msgdispatcher's graphical detection (env vars), plus a logind-level probe.
+  ## Journal access (check_journal) is privleap/journal, NOT a graphical-session dependency,
+  ## so it is deliberately NOT gated on this.
+  systemcheck_graphical_session_present='true'
+
+  ## Opt-out: a site may force these checks to always run (never auto-skip).
+  if [ "${systemcheck_headless_autoskip:-true}" != 'true' ]; then
+    return 0
+  fi
+
+  ## Any positive signal of a graphical/logind session -> present (do not mask).
+  case "${XDG_SESSION_TYPE:-}" in
+    x11|wayland)
+      return 0
+      ;;
+  esac
+  if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
+    return 0
+  fi
+  if [ "${XDG_CURRENT_DESKTOP:-}" = 'X-QUBES' ]; then
+    return 0
+  fi
+  if systemctl --user --quiet is-active graphical-session.target 2>/dev/null; then
+    return 0
+  fi
+
+  ## No positive signal: genuinely headless.
+  systemcheck_graphical_session_present='false'
+}
+
 if_you_know_what_you_are_doing_funct() {
    ## $1 - ${FUNCNAME[0]}
    printf '%s\n' "\
@@ -512,6 +551,7 @@ preparation() {
    systemcheck_run_function msgdispatcher_init
    systemcheck_run_function virtualizer_detection
    systemcheck_run_function sysmaint_state_detection
+   systemcheck_run_function systemcheck_session_detection
 
    ## 'verbose' is initialized by the main systemcheck script.
 
