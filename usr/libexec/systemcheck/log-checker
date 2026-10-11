@@ -26,8 +26,9 @@ set -o errtrace
 ## Redirect all stderr to stdout.
 exec 2>&1
 
-bash -n /usr/libexec/helper-scripts/strings.bsh
-source /usr/libexec/helper-scripts/strings.bsh
+bash -n "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/strings.bsh
+# shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/strings.bsh
+source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/strings.bsh
 
 ## Copied from /usr/libexec/systemcheck/preparation.bsh.
 source_config() {
