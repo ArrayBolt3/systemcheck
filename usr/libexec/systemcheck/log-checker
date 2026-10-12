@@ -108,7 +108,10 @@ check_service_logs() {
   safe-rm --force -- "${TMPDIR}/journalctl_output.txt"
 
   ## Output by 'apparmor-info' is already de-duplicated.
-  leaprun read-apparmor-info | tee --append -- "${TMPDIR}/journalctl_matched.txt" >/dev/null
+  ##
+  ## Need to silence non-zero exit code from apparmor-info, as it returns 1
+  ## when "DENIED" messages are found.
+  { leaprun read-apparmor-info || true; } | tee --append -- "${TMPDIR}/journalctl_matched.txt" >/dev/null
 
   if [ "${#journal_ignore_fixed_list[@]}" -gt 0 ]; then
     grep_ignore_fixed_items_command=( grep --invert-match --fixed-strings --ignore-case )
