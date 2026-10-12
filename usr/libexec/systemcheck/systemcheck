@@ -187,6 +187,9 @@ source /usr/libexec/systemcheck/check_systemd_clock.bsh
 bash -n /usr/libexec/systemcheck/check_system_ready.bsh
 # shellcheck source=./check_system_ready.bsh
 source /usr/libexec/systemcheck/check_system_ready.bsh
+bash -n /usr/libexec/systemcheck/check_tempdir.bsh
+# shellcheck source=./check_tempdir.bsh
+source /usr/libexec/systemcheck/check_tempdir.bsh
 bash -n /usr/libexec/systemcheck/check_timezone.bsh
 # shellcheck source=./check_timezone.bsh
 source /usr/libexec/systemcheck/check_timezone.bsh
