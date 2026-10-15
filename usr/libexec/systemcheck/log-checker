@@ -196,7 +196,7 @@ main() {
     check_critical_logs
   elif [ "${check_mode}" = 'get_failed_load_modules_list' ]; then
     ( leaprun read-journalctl-logs-this-boot || true ) 2>&1 \
-      | sed -n "s/.*Failed to insert module '\(.*\)': Key was rejected by service/\1/p" \
+      | sed -n "s/.*Failed to insert module '\(.*\)':.*/\1/p" \
       | sanitize-string -- nolimit
   elif [ "${check_mode}" = 'get_kernel_module_key_rejected_count' ]; then
     ( leaprun read-journalctl-logs-this-boot || true ) 2>&1 \
